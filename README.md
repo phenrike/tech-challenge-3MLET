@@ -26,6 +26,31 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
 1. Clone o repositório:
    ```bash
    git clone https://github.com/phenrike/tech-challenge-3MLET.git
+
+2. Adicionar o nome de usuário:
+   ```bash
+   git config --global user.name "nome de usuário"
+
+3. Adicionar e-mail
+   ```bash
+   git config --global user.email "email@email.com"
+
+4. Verificar status do commit:
+   ```bash
+   git status
+
+5. Baixar cópia do repositório:
+   ```bash
+   git pull
+
+6. Executar o commit local:
+   ```bash
+   git commit -m "Descrição da alteração"
+
+7. Fazer upload do commit para o GitHub:
+   ```bash
+   git push
+
    
 ## Integrantes 
 
