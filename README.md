@@ -20,6 +20,7 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
 3. **Implementar autenticação** (opcional, recomendada JWT) para proteger as rotas da API.
 4. **Desenhar a arquitetura do projeto**, incluindo um plano de deploy e ingestão dos dados até a integração com um futuro modelo de Machine Learning.
 5. **Deploy do MVP**, com um link compartilhável e um repositório no GitHub.
+6. **Vídeo de 5 minutos**, apresentando o desenvolvimento do projeto e os resultados.
 
 ## Como Executar
 
