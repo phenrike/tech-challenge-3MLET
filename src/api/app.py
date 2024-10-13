@@ -1,5 +1,6 @@
 import sys
 import os
+from flasgger import Swagger
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -8,6 +9,7 @@ from routes import configure_routes
 
 def create_app():
     app = Flask(__name__)
+    swagger = Swagger(app)
     
     # Configurar rotas
     configure_routes(app)

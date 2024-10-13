@@ -54,41 +54,12 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
    docker-compose up --build -d
    ```
 
-3. Parar a execução da API e do banco de dados:
+3. **Acessar a API no navegador**:
+<http://127.0.0.1:5000/apidocs/>
+
+4. Parar a execução da API e do banco de dados:
    ```bash
    docker-compose down
-   ```
-
-## Configuração e Uso do Git
-
-1. Adicionar o nome de usuário:
-   ```bash
-   git config --global user.name "seu nome de usuário"
-   ```
-
-2. Adicionar o e-mail:
-   ```bash
-   git config --global user.email "seu.email@example.com"
-   ```
-
-3. Verificar o status do commit:
-   ```bash
-   git status
-   ```
-
-4. Atualizar o repositório local:
-   ```bash
-   git pull
-   ```
-
-5. Executar o commit local:
-   ```bash
-   git commit -m "Descrição da alteração"
-   ```
-
-6. Fazer upload do commit para o GitHub:
-   ```bash
-   git push
    ```
 
 ## Integrantes
