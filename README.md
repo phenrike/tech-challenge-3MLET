@@ -1,20 +1,39 @@
+
 # Tech Challenge - API de Vitivinicultura
 
-Este repositório contém o projeto desenvolvido como parte do **Tech Challenge**, uma atividade integradora que visa aplicar os conhecimentos adquiridos em diversas disciplinas. O objetivo do projeto é a criação de uma **API REST em Python** que consulta e disponibiliza os dados de vitivinicultura da **Embrapa**. Essa API será usada futuramente para alimentar um modelo de **Machine Learning**, com foco na análise e processamento de dados.
+Este repositório contém o projeto desenvolvido como parte do **Tech Challenge**, uma atividade integradora que visa aplicar os conhecimentos adquiridos em diversas disciplinas. O objetivo é criar uma **API REST em Python** que consulta e disponibiliza os dados de vitivinicultura da **Embrapa**. Futuramente, essa API alimentará um modelo de **Machine Learning**, focado na análise e processamento de dados.
+
+## Tecnologias Usadas 🛠️
+
+- **Python 3.12.7** 🐍
+- **Flask** 🌐
+- **PostgreSQL** 🐘
+- **Docker** 🐳 (**necessário para rodar o projeto**)
+- **GitHub Actions** 🚀 
+- **JWT** 🔑
+
+## Ambiente Necessário ⚙️
+
+- **Python 3.12.7**: Instale a versão mais recente do Python [aqui](https://www.python.org/downloads/).
+- **PostgreSQL**: Banco de dados para armazenar e consultar os dados. Instale-o [aqui](https://www.postgresql.org/download/).
+- **Docker**: Necessário para rodar o projeto, criando e gerenciando containers da API e do banco de dados. Instale-o [aqui](https://www.docker.com/products/docker-desktop).
+- **Git**: Para controle de versão e gerenciamento do repositório. Instale-o [aqui](https://git-scm.com/).
 
 ## Funcionalidades
-- Consultas nos dados da Embrapa, incluindo:
+
+- Consultas aos dados da Embrapa, incluindo:
   - Produção
   - Processamento
   - Comercialização
   - Importação
   - Exportação
-- API documentada para facilitar o uso e integração
-- Suporte a autenticação (JWT sugerido)
-- Planejamento de arquitetura para ingestão de dados e deploy da API
-- MVP disponível com deploy em ambiente compartilhável
+- API documentada para facilitar o uso e integração.
+- Suporte à autenticação JWT.
+- Planejamento da arquitetura para ingestão de dados e deploy da API.
+- MVP disponível com deploy em ambiente compartilhável.
 
 ## Objetivos do Projeto
+
 1. **Criar uma API REST em Python** que consulte dados diretamente do site da Embrapa.
 2. **Documentar a API** para facilitar sua integração por outros desenvolvedores.
 3. **Implementar autenticação** (opcional, recomendada JWT) para proteger as rotas da API.
@@ -27,37 +46,55 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
 1. Clone o repositório:
    ```bash
    git clone https://github.com/phenrike/tech-challenge-3MLET.git
+   ```
 
-2. Adicionar o nome de usuário:
+2. **Executar a API e o banco de dados (necessário Docker instalado)**:
    ```bash
-   git config --global user.name "nome de usuário"
+   cd ./docker/
+   docker-compose up --build -d
+   ```
 
-3. Adicionar e-mail
+3. Parar a execução da API e do banco de dados:
    ```bash
-   git config --global user.email "email@email.com"
+   docker-compose down
+   ```
 
-4. Verificar status do commit:
+## Configuração e Uso do Git
+
+1. Adicionar o nome de usuário:
+   ```bash
+   git config --global user.name "seu nome de usuário"
+   ```
+
+2. Adicionar o e-mail:
+   ```bash
+   git config --global user.email "seu.email@example.com"
+   ```
+
+3. Verificar o status do commit:
    ```bash
    git status
+   ```
 
-5. Baixar cópia do repositório:
+4. Atualizar o repositório local:
    ```bash
    git pull
+   ```
 
-6. Executar o commit local:
+5. Executar o commit local:
    ```bash
    git commit -m "Descrição da alteração"
+   ```
 
-7. Fazer upload do commit para o GitHub:
+6. Fazer upload do commit para o GitHub:
    ```bash
    git push
+   ```
 
-   
-## Integrantes 
+## Integrantes
 
-1.Paulo Henrique Piaunios dos Santos
-2.Letícia Miranda 
-3.Diogo Octaviano Jesse
-4.João Paulo Gonçalves Ribeiro
-5.Thadeu Pereira de Alencar Soares
-
+1. Paulo Henrique Piaunios dos Santos  
+2. Letícia Miranda  
+3. Diogo Octaviano Jesse  
+4. João Paulo Gonçalves Ribeiro  
+5. Thadeu Pereira de Alencar Soares  
