@@ -50,6 +50,7 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
 
 2. **Executar a API e o banco de dados (necessário Docker instalado)**:
    ```bash
+   cd ./tech-challenge-3MLET/
    cd ./docker/
    docker-compose up --build -d
    ```
