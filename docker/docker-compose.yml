@@ -1,0 +1,37 @@
+services:
+  flask-app:
+    build:
+      context: ../              
+      dockerfile: docker/Dockerfile  
+    ports:
+      - "5000:5000"             
+    volumes:
+      - ../src:/app/src         
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/DB_VITIVINICULTURA
+      - FLASK_APP=api.app
+      - PYTHONPATH=/app/src     
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    build:
+      context: ./postgres
+    environment:
+      POSTGRES_DB: DB_VITIVINICULTURA
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:
