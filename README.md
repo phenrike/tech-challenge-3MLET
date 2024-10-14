@@ -49,19 +49,39 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
    ```
 
 2. **Executar a API e o banco de dados (necessário Docker instalado)**:
-   ```bash
-   cd ./tech-challenge-3MLET/
-   cd ./docker/
-   docker-compose up --build -d
-   ```
+
+   - Para a versão mais recente do Docker (recomendada):
+
+     ```bash
+     cd ./tech-challenge-3MLET/
+     cd ./docker/
+     docker compose up --build -d
+     ```
+
+   - Para a versão legada do Docker (se você ainda estiver usando `docker-compose`):
+
+     ```bash
+     cd ./tech-challenge-3MLET/
+     cd ./docker/
+     docker-compose up --build -d
+     ```
 
 3. **Acessar a API no navegador**:
 <http://127.0.0.1:5000/apidocs/>
 
-4. Parar a execução da API e do banco de dados:
-   ```bash
-   docker-compose down
-   ```
+4. **Parar a execução da API e do banco de dados**:
+
+   - Para a versão mais recente do Docker (recomendada):
+
+     ```bash
+     docker compose down
+     ```
+
+   - Para a versão legada do Docker:
+
+     ```bash
+     docker-compose down
+     ```
 
 ## Integrantes
 
