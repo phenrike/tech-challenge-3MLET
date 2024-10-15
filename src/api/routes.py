@@ -1,5 +1,6 @@
 # src/api/routes.py
 from flask import jsonify
+from infra.db_connection import db
 from services.data_ingestion_service import DataIngestionService
 
 def configure_routes(app):

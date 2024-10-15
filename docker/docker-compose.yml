@@ -8,7 +8,8 @@ services:
     volumes:
       - ../src:/app/src         
     environment:
-      - DATABASE_URL=postgres://postgres:password@db:5432/DB_VITIVINICULTURA
+      # Garanta que o nome do banco de dados seja minúsculo ou envolva-o em aspas duplas para preservar a capitalização
+      - DATABASE_URL=postgresql://postgres:password@db:5432/db_vitivinicultura
       - FLASK_APP=api.app
       - PYTHONPATH=/app/src     
     depends_on:
@@ -20,7 +21,7 @@ services:
     build:
       context: ./postgres
     environment:
-      POSTGRES_DB: DB_VITIVINICULTURA
+      POSTGRES_DB: db_vitivinicultura  # Use letras minúsculas ou aspas duplas se for usar maiúsculas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
