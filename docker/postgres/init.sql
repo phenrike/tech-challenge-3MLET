@@ -13,6 +13,8 @@ VALUES ('Arroz', 'Cereal', 2023, 1500.75);
 
 -- DROP SCHEMA public;
 
+DROP SCHEMA IF EXISTS public CASCADE;
+
 CREATE SCHEMA public AUTHORIZATION pg_database_owner;
 
 -- DROP SEQUENCE public.tbl_comercializacao_id_comercializacao_seq;
@@ -232,4 +234,16 @@ CREATE TABLE public.tbl_processamento (
 	qt_processamento numeric(10, 2) NULL,
 	CONSTRAINT tbl_processamento_pkey PRIMARY KEY (id_processamento),
 	CONSTRAINT fk_id_cultivo FOREIGN KEY (id_cultivo) REFERENCES public.tbl_cultivo(id_cultivo)
+);
+
+-- public.tbl_usuario definição
+
+-- Drop table
+
+-- DROP TABLE public.tbl_usuario;
+
+CREATE TABLE public.tbl_usuario (
+	username varchar(255) NOT NULL,
+	password varchar(255) NOT NULL,
+    CONSTRAINT tbl_usuario_pkey PRIMARY KEY (username)
 );
