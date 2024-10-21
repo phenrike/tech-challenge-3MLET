@@ -8,15 +8,23 @@ class CSVProcessor:
     def process_csv_data(csv_content: str):
         # Converter o conteúdo do CSV em uma lista de dicionários
         csv_file = StringIO(csv_content)
-        reader = csv.DictReader(csv_file)
+        reader = csv.DictReader(csv_file,delimiter=';')
         
         data = []
+        categoria = ""
         for row in reader:
-            # Processar cada linha do CSV conforme necessário
-            data.append({
-                "column1": row["Column1"],
-                "column2": row["Column2"],
-                # Adicionar mais colunas conforme o CSV
-            })
-        
+            if row["control"].isupper():
+                categoria = row["control"].title()
+            for key, value in row.items():
+                # print(key, value)
+                if value in ['id', 'control', 'produto'] or row["produto"].isupper() or key in ['id', 'control', 'produto']:
+                    # skip key value pair
+                    ...
+                else:
+                    data.append({
+                        "ds_produto": row["produto"].strip(),
+                        "tp_produto": categoria,
+                        "dt_ano": key,
+                        "qt_producao": value
+                    })
         return data

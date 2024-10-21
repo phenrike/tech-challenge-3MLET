@@ -136,8 +136,8 @@ CREATE TABLE public.tbl_producao (
 	id_producao serial4 NOT NULL,
 	ds_produto varchar(100) NOT NULL,
 	tp_produto varchar(100) NOT NULL,
-	dt_ano date NOT NULL,
-	qt_producao numeric(10, 2) NULL,
+	dt_ano integer NOT NULL,
+	qt_producao numeric(15, 2) NULL,
 	CONSTRAINT tbl_producao_pkey PRIMARY KEY (id_producao)
 );
 
