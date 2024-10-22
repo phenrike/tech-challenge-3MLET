@@ -12,6 +12,18 @@ from routes import configure_routes
 
 def create_app():
     app = Flask(__name__)
+    app.config['SWAGGER'] = {
+        'title': 'Tech Challenge - API de Vitivinicultura',
+        'uiversion': 3,
+        'securityDefinitions': {
+            'Bearer': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header',
+                'description': 'JWT Authorization header usando o esquema Bearer. Exemplo: "Authorization: Bearer {token}"'
+            }
+        }
+    }
     swagger = Swagger(app)
 
     app.config['JWT_SECRET_KEY'] = 'embrapa'
