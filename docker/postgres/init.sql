@@ -1,16 +1,4 @@
 
-CREATE TABLE producao (
-    id_producao SERIAL PRIMARY KEY,
-    ds_produto VARCHAR(255) NOT NULL,
-    tp_produto VARCHAR(50) NOT NULL,
-    dt_ano INTEGER NOT NULL,
-    qt_producao FLOAT NOT NULL
-);
-
-INSERT INTO producao (ds_Produto, tp_Produto, dt_Ano, qt_Producao)
-VALUES ('Arroz', 'Cereal', 2023, 1500.75);
-
-
 -- DROP SCHEMA public;
 
 DROP SCHEMA IF EXISTS public CASCADE;
@@ -107,8 +95,8 @@ CREATE TABLE public.tbl_comercializacao (
 	id_comercializacao serial4 NOT NULL,
 	ds_produto varchar(100) NOT NULL,
 	tp_produto varchar(100) NOT NULL,
-	dt_ano date NOT NULL,
-	qt_comercializacao numeric(10, 2) NULL,
+	dt_ano integer NOT NULL,
+	qt_comercializacao numeric(15, 2) NULL,
 	CONSTRAINT tbl_comercializacao_pkey PRIMARY KEY (id_comercializacao)
 );
 
@@ -195,7 +183,7 @@ CREATE TABLE public.tbl_exportacao (
 	id_exportacao serial4 NOT NULL,
 	id_tipo_prod_imp_exp int4 NOT NULL,
 	ds_pais varchar(100) NOT NULL,
-	dt_ano date NOT NULL,
+	dt_ano integer NOT NULL,
 	qt_exportacao numeric(10, 2) NULL,
 	vl_exportacao numeric(10, 2) NULL,
 	CONSTRAINT tbl_exportacao_pkey PRIMARY KEY (id_exportacao),
@@ -213,7 +201,7 @@ CREATE TABLE public.tbl_importacao (
 	id_importacao serial4 NOT NULL,
 	id_tipo_prod_imp_exp int4 NOT NULL,
 	ds_pais varchar(100) NOT NULL,
-	dt_ano date NOT NULL,
+	dt_ano integer NOT NULL,
 	qt_importacao numeric(10, 2) NULL,
 	vl_importacao numeric(10, 2) NULL,
 	CONSTRAINT tbl_importacao_pkey PRIMARY KEY (id_importacao),
@@ -230,7 +218,7 @@ CREATE TABLE public.tbl_importacao (
 CREATE TABLE public.tbl_processamento (
 	id_processamento serial4 NOT NULL,
 	id_cultivo int4 NOT NULL,
-	dt_ano date NOT NULL,
+	dt_ano integer NOT NULL,
 	qt_processamento numeric(10, 2) NULL,
 	CONSTRAINT tbl_processamento_pkey PRIMARY KEY (id_processamento),
 	CONSTRAINT fk_id_cultivo FOREIGN KEY (id_cultivo) REFERENCES public.tbl_cultivo(id_cultivo)
