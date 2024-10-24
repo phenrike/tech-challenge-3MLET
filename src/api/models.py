@@ -25,11 +25,11 @@ class Processamento(db.Model):
 
 class Comercializacao(db.Model):
     __tablename__ = 'tbl_comercializacao'
-    id_Comercializacao = db.Column(db.Integer, primary_key=True)
-    ds_Produto = db.Column(db.String(255), nullable=False)
-    tp_Produto = db.Column(db.String(50), nullable=False)
-    dt_Ano = db.Column(db.Integer, nullable=False)
-    qt_Comercializacao = db.Column(db.Float, nullable=False)
+    id_comercializacao = db.Column(db.Integer, primary_key=True)
+    ds_produto = db.Column(db.String(255), nullable=False)
+    tp_produto = db.Column(db.String(50), nullable=False)
+    dt_ano = db.Column(db.Integer, nullable=False)
+    qt_comercializacao = db.Column(db.Float, nullable=False)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

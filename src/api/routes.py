@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 from werkzeug.security import generate_password_hash, check_password_hash
 from services.data_ingestion_service import DataIngestionService
 from flasgger import swag_from
-from api.models import (Usuario)
+from api.models import (Usuario, Producao, Processamento, Comercializacao, Importacao, Exportacao)
 from infra.postgres_repository import PostgresRepository
 
 def configure_routes(app):
@@ -29,7 +29,6 @@ def configure_routes(app):
       500: {'description': 'Error while processing CSV files'}
       }
     })
-    @jwt_required()
     def import_csvs_from_embrapa():
         try:
             DataIngestionService.process_multiple_csv()
@@ -107,3 +106,53 @@ def configure_routes(app):
     def protected():
         current_user = get_jwt_identity()
         return jsonify(logged_in_as=current_user), 200
+
+    @app.route('/producao', methods=['GET'])
+    #@jwt_required
+    @swag_from({
+        'summary': 'Return Production Data',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def producao():
+        ano = request.args.get('ano')
+        produto = request.args.get('produto')
+        if ano and produto:
+            producao = Producao.query.filter_by(dt_ano=ano, ds_produto=produto).first()
+            return jsonify(producao.as_dict()), 200
+        elif ano and not produto:
+            producao = Producao.query.filter_by(dt_ano=ano).all()
+        elif not ano and produto:
+            producao = Producao.query.filter_by(ds_produto=produto).all()
+        else:
+            return jsonify({"message":"You must provide a year or a product"}), 400
+        producao_dict = [prod.as_dict() for prod in producao]
+        return jsonify(producao_dict), 200
+
+    @app.route('/comercializacao', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Commercialization Data',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def comercializacao():
+        ano = request.args.get('ano')
+        produto = request.args.get('produto')
+        if ano and produto:
+            comercializacao = Comercializacao.query.filter_by(dt_ano=ano, ds_produto=produto).first()
+            return jsonify(comercializacao.as_dict()), 200
+        elif ano and not produto:
+            comercializacao = Comercializacao.query.filter_by(dt_ano=ano).all()
+        elif not ano and produto:
+            comercializacao = Comercializacao.query.filter_by(ds_produto=produto).all()
+        else:
+            return jsonify({"message": "You must provide a year or a product"}), 400
+        comercializacao_dict = [prod.as_dict() for prod in comercializacao]
+        return jsonify(comercializacao_dict), 200
