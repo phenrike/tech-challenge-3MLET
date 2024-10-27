@@ -88,74 +88,74 @@ ________________________________________________________________________________
 
 Esta API não consulta dados diretamente no site do Embrapa, ela possui um job que é executado diariamente e faz o download dos arquivos .csv disponibilizados pela empresa e os importa para um banco de dados local. Por tanto, caso tenha alguma atualização no site, ela estará disponibilizada no dia seguinte após a sincronização.
 
-##### **Endpoint: Registro de usuário**
+### **Endpoint: Registro de usuário**
 
 Somente usuários cadastrados no banco de dados podem acessar a API.
 
 **Requisição:**
 
-- URL: 'api/register'
+- URL: `api/register`
 - Método: POST
 - Parâmetros:
-  - 'username': Nome do usuário.
-  - 'password': Senha do usuário.
+  - `username`: Nome do usuário.
+  - `password`: Senha do usuário.
 
 **Resposta:**
 
-- Código '201' - 	User successfully registered and saved in the database
+- Código `201` - 	User successfully registered and saved in the database
 
-##### **Endpoint: Autenticação**
+### **Endpoint: Autenticação**
 
 A autenticação na API é feita através de JWT (Jason Web Token).
 
 **Requisição:**
 
-- URL: 'api/login'
+- URL: `api/login`
 - Método: POST
 - Parâmetros:
-  - 'username': Nome do usuário.
-  - 'password': Senha do usuário.
+  - `username`: Nome do usuário.
+  - `password`: Senha do usuário.
 
 **Resposta:**
 
-- Código '200' - login successful and jwt generated
-- Código '401'- Invalid username or password
+- Código `200` - login successful and jwt generated
+- Código `401`- Invalid username or password
 
-##### **Endpoint: Comercialização**
+### **Endpoint: Comercialização**
 
 Este endpoint permite a pesquisa de dados comerciais baseados em ano ou produto.
 
 **Requisição:**
 
-- URL: 'api/comercializacao'
+- URL: `api/comercializacao`
 - Método: GET
 - Parâmetros:
-  - 'ano': Ano de comercialização.
-  - 'produto': Produto comercializado.
+  - `ano`: Ano de comercialização.
+  - `produto`: Produto comercializado.
 
 **Resposta:**
 
-- Código '200' - Data returned successfully
-- Código '400' - You must provide a year or a product
-- Código '401'- Unauthorized
+- Código `200` - Data returned successfully
+- Código `400` - You must provide a year or a product
+- Código `401`- Unauthorized
 
-##### **Endpoint: Produção**
+### **Endpoint: Produção**
 
 Este endpoint permite a pesquisa de dados de produção baseados em ano ou produto.
 
 **Requisição:**
 
-- URL: 'api/producao'
+- URL: `api/producao`
 - Método: GET
 - Parâmetros:
-  - 'ano': Ano de produção.
-  - 'produto': Produto produzido.
+  - `ano`: Ano de produção.
+  - `produto`: Produto produzido.
 
 **Resposta:**
 
-- Código '200' - Data returned successfully
-- Código '400' - You must provide a year or a product
-- Código '401'- Unauthorized
+- Código `200` - Data returned successfully
+- Código `400` - You must provide a year or a product
+- Código `401`- Unauthorized
 _________________________________________________________________________________________
 ## Integrantes
 
