@@ -37,7 +37,7 @@ class Comercializacao(db.Model):
 class Importacao(db.Model):
     __tablename__ = 'tbl_importacao'
     id_importacao = db.Column(db.Integer, primary_key=True)
-    ds_tipo_prod_imp = db.Column(db.String(255), nullable=False)
+    id_tipo_prod_imp_exp = db.Column(db.Integer, nullable=False)
     ds_pais = db.Column(db.String(100), nullable=False)
     dt_ano = db.Column(db.Integer, nullable=False)
     qt_importacao = db.Column(db.Float, nullable=False)
@@ -50,7 +50,7 @@ class Exportacao(db.Model):
     __tablename__ = 'tbl_exportacao'
 
     id_exportacao = db.Column(db.Integer, primary_key=True)
-    ds_tipo_prod_exp = db.Column(db.String(255), nullable=False)
+    id_tipo_prod_imp_exp = db.Column(db.Integer, nullable=False)
     ds_pais = db.Column(db.String(100), nullable=False)
     dt_ano = db.Column(db.Integer, nullable=False)
     qt_exportacao = db.Column(db.Float, nullable=False)
@@ -67,6 +67,15 @@ class Usuario(db.Model):
 
     def __repr__(self):
         return f'<username: {self.username}>'
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+class TipoImpExp(db.Model):
+    __tablename__ = 'tbl_prod_imp_exp'
+
+    id_tipo_prod_imp_exp = db.Column(db.Integer, primary_key=True)
+    ds_tipo_prod_imp_exp = db.Column(db.String(100), nullable=False)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

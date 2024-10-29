@@ -6,7 +6,8 @@ class CSVFactory:
     
     @staticmethod
     def get_csv_url(file_type: FileType) -> str:
-        base_url = "http://vitibrasil.cnpuv.embrapa.br/download/"
+        #base_url = "http://vitibrasil.cnpuv.embrapa.br/download/"
+        base_url = "http://192.168.3.4:8080/"
         return f"{base_url}{file_type.value}"
     
     @staticmethod

@@ -10,7 +10,7 @@ class DataIngestionService:
     @staticmethod
     def process_multiple_csv():
         for file_type in FileType.get_all_files():
-            if file_type.value in ['Producao.csv','Comercio.csv']: # condicao para testar com tabelas de producao e comercio
+            if file_type.value not in ["ProcessaAmericanas.csv","ProcessaMesa.csv", "ProcessaSemclass.csv", "ProcessaViniferas.csv"]:
                 # 1. Baixar e processar o CSV
                 csv_data = CSVFactory.download_csv_data(file_type)
 
@@ -24,3 +24,7 @@ class DataIngestionService:
                     PostgresRepository.save_data(Producao, processed_data)
                 elif file_type.value == 'Comercio.csv':
                     PostgresRepository.save_data(Comercializacao, processed_data)
+                elif file_type.value.find('Imp') != -1:
+                    PostgresRepository.save_data(Importacao, processed_data)
+                elif file_type.value.find('Exp') != -1:
+                    PostgresRepository.save_data(Exportacao, processed_data)

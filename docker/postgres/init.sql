@@ -113,6 +113,13 @@ CREATE TABLE public.tbl_prod_imp_exp (
 	CONSTRAINT tbl_prod_imp_exp_pkey PRIMARY KEY (id_tipo_prod_imp_exp)
 );
 
+INSERT INTO tbl_prod_imp_exp (ds_tipo_prod_imp_exp)
+VALUES
+    ('Vinhos de Mesa'),
+    ('Espumantes'),
+    ('Uvas Frescas'),
+    ('Uvas Passas'),
+    ('Suco de Uva');
 
 -- public.tbl_producao definição
 
@@ -184,8 +191,8 @@ CREATE TABLE public.tbl_exportacao (
 	id_tipo_prod_imp_exp int4 NOT NULL,
 	ds_pais varchar(100) NOT NULL,
 	dt_ano integer NOT NULL,
-	qt_exportacao numeric(10, 2) NULL,
-	vl_exportacao numeric(10, 2) NULL,
+	qt_exportacao numeric(15, 2) NULL,
+	vl_exportacao numeric(15, 2) NULL,
 	CONSTRAINT tbl_exportacao_pkey PRIMARY KEY (id_exportacao),
 	CONSTRAINT fk_id_tipo_prod_exp FOREIGN KEY (id_tipo_prod_imp_exp) REFERENCES public.tbl_prod_imp_exp(id_tipo_prod_imp_exp)
 );
@@ -202,8 +209,8 @@ CREATE TABLE public.tbl_importacao (
 	id_tipo_prod_imp_exp int4 NOT NULL,
 	ds_pais varchar(100) NOT NULL,
 	dt_ano integer NOT NULL,
-	qt_importacao numeric(10, 2) NULL,
-	vl_importacao numeric(10, 2) NULL,
+	qt_importacao numeric(15, 2) NULL,
+	vl_importacao numeric(15, 2) NULL,
 	CONSTRAINT tbl_importacao_pkey PRIMARY KEY (id_importacao),
 	CONSTRAINT fk_id_tipo_prod_imp FOREIGN KEY (id_tipo_prod_imp_exp) REFERENCES public.tbl_prod_imp_exp(id_tipo_prod_imp_exp)
 );
@@ -219,7 +226,7 @@ CREATE TABLE public.tbl_processamento (
 	id_processamento serial4 NOT NULL,
 	id_cultivo int4 NOT NULL,
 	dt_ano integer NOT NULL,
-	qt_processamento numeric(10, 2) NULL,
+	qt_processamento numeric(15, 2) NULL,
 	CONSTRAINT tbl_processamento_pkey PRIMARY KEY (id_processamento),
 	CONSTRAINT fk_id_cultivo FOREIGN KEY (id_cultivo) REFERENCES public.tbl_cultivo(id_cultivo)
 );

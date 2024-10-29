@@ -156,3 +156,68 @@ def configure_routes(app):
             return jsonify({"message": "You must provide a year or a product"}), 400
         comercializacao_dict = [prod.as_dict() for prod in comercializacao]
         return jsonify(comercializacao_dict), 200
+
+    @app.route('/exportacao', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Exportation Data',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def exportacao():
+        ano = request.args.get('ano')
+        pais = request.args.get('pais')
+        tipo_prod = request.args.get('tipo')
+        query = Exportacao.query
+        # adiciona filtros nas consultas
+        if ano:
+            query = query.filter_by(dt_ano=ano)
+        if pais:
+            query = query.filter_by(ds_pais=pais)
+        if tipo_prod:
+            query = query.filter_by(id_tipo_prod_imp_exp=tipo_prod)
+
+        # roda a consulta se tiver pelo menos um filtro ou retorna um erro
+        if not ano and not pais and not tipo_prod:
+            return jsonify({"message": "You must provide a year or a product"}), 400
+        else:
+            exportacao = query.all()
+
+        exportacao_dict = [export.as_dict() for export in exportacao]
+        return jsonify(exportacao_dict), 200
+
+    @app.route('/importacao', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Importation Data',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def importacao():
+        ano = request.args.get('ano')
+        pais = request.args.get('pais')
+        tipo_prod = request.args.get('tipo')
+        query = Importacao.query
+
+        # adiciona filtros nas consultas
+        if ano:
+            query = query.filter_by(dt_ano=ano)
+        if pais:
+            query = query.filter_by(ds_pais=pais)
+        if tipo_prod:
+            query = query.filter_by(id_tipo_prod_imp_exp=tipo_prod)
+
+        # roda a consulta se tiver pelo menos um filtro ou retorna um erro
+        if not ano and not pais and not tipo_prod:
+            return jsonify({"message": "You must provide a year or a product"}), 400
+        else:
+            importacao = query.all()
+
+        importacao_dict = [imp.as_dict() for imp in importacao]
+        return jsonify(importacao_dict), 200
