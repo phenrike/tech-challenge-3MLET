@@ -15,7 +15,11 @@ class DataIngestionService:
                 csv_data = CSVFactory.download_csv_data(file_type)
 
                 # 2. Processar os dados do CSV
+                #processed_data=[]
                 processed_data = CSVProcessor.process_csv_data(csv_data, file_type)
+
+                #parsed_data = CSVProcessor.parse_csv_with_pandas(csv_data)
+                #print(parsed_data)
 
                 # 3. Salvar os dados no banco de dados
                 #  PostgresRepository.save_data(processed_data)

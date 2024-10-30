@@ -121,8 +121,7 @@ def configure_routes(app):
         ano = request.args.get('ano')
         produto = request.args.get('produto')
         if ano and produto:
-            producao = Producao.query.filter_by(dt_ano=ano, ds_produto=produto).first()
-            return jsonify(producao.as_dict()), 200
+            producao = Producao.query.filter_by(dt_ano=ano, ds_produto=produto).all()
         elif ano and not produto:
             producao = Producao.query.filter_by(dt_ano=ano).all()
         elif not ano and produto:
