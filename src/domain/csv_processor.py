@@ -2,37 +2,9 @@
 import csv
 import pandas as pd
 from io import StringIO
-from api.models import (TipoImpExp )
+from api.models import (TipoImpExp, TipoUva )
 
 class CSVProcessor:
-
-    def parse_csv_with_pandas(csv_content: str) -> pd.DataFrame:
-        # Define column names
-        columns = ["id", "control", "Produto"] + [str(year) for year in range(1970, 2024)]
-
-        # Load the CSV content into a DataFrame with specified columns
-        df = pd.read_csv(StringIO(csv_content), sep=';', header=None, names=columns)
-
-        # Identify wine types and subtypes based on uppercase in 'Produto'
-        df['is_type'] = df['Produto'].str.isupper()
-
-        # Forward fill the wine types to group subtypes under them
-        df['type'] = df['Produto'].where(df['is_type']).ffill()
-
-        # Separate types and subtypes
-        wine_types = df[df['is_type']].copy()
-        wine_subtypes = df[~df['is_type']].copy()
-
-        # Merge wine types with their subtypes
-        wine_types = wine_types[['id', 'Produto', 'control']].rename(
-            columns={"Produto": "type_name", "control": "type_control"})
-        merged_data = wine_subtypes.merge(wine_types, how='left', left_on='type', right_on='type_name')
-
-        # Clean up columns for final structure
-        merged_data = merged_data.drop(columns=['is_type', 'type_name'])
-        merged_data = merged_data.rename(columns={"Produto": "subtype_name", "control": "subtype_control"})
-
-        return merged_data
 
     @staticmethod
     def process_csv_data(csv_content: str, file_type):
@@ -40,25 +12,21 @@ class CSVProcessor:
         data = []
         imp_files = ["ImpEspumantes.csv", "ImpFrescas.csv", "ImpPassas.csv", "ImpSuco.csv", "ImpVinhos.csv"]
         exp_files = ["ExpEspumantes.csv", "ExpSuco.csv", "ExpUva.csv", "ExpVinho.csv"]
+        proc_files = ["ProcessaAmericanas.csv", "ProcessaMesa.csv", "ProcessaSemclass.csv"]
         # coloca nas variaveis a identificacao correspondente ao tipo do arquivo
         if file_type.value == "Producao.csv":
-            control_column = "control"
-            product_column = "produto"
             ds_key = "ds_produto"
             tp_key = "tp_produto"
             dt_key = "dt_ano"
             qt_key = "qt_producao"
             delimiter = ";"
         elif file_type.value == "Comercio.csv":
-            control_column = "control"
-            product_column = "Produto"
             ds_key = "ds_produto"
             tp_key = "tp_produto"
             dt_key = "dt_ano"
             qt_key = "qt_comercializacao"
             delimiter = ";"
         elif file_type.value in imp_files:
-            control_column = ""
             ds_key = "ds_pais"
             tp_key = "id_tipo_prod_imp_exp"
             dt_key = "dt_ano"
@@ -66,12 +34,23 @@ class CSVProcessor:
             vl_key = "vl_importacao"
             delimiter = ";"
         elif file_type.value in exp_files:
-            control_column = ""
             ds_key = "ds_pais"
             tp_key = "id_tipo_prod_imp_exp"
             dt_key = "dt_ano"
             qt_key = "qt_exportacao"
             vl_key = "vl_exportacao"
+            delimiter = ";"
+        elif file_type.value in proc_files:
+            tp_key = "id_tipo_uva"
+            ds_key = "ds_cultivo"
+            dt_key = "dt_ano"
+            qt_key = "qt_processamento"
+            delimiter = "\t"
+        elif file_type.value == "ProcessaViniferas.csv":
+            tp_key = "id_tipo_uva"
+            ds_key = "ds_cultivo"
+            dt_key = "dt_ano"
+            qt_key = "qt_processamento"
             delimiter = ";"
 
         # Converter o conteúdo do CSV em uma lista de dicionários
@@ -83,20 +62,22 @@ class CSVProcessor:
             df = pd.read_csv(csv_file, encoding='latin1', sep=delimiter)
 
         # condicao para processar os dados das tabelas de producao e comercializacao
-        if control_column != "":
+        if file_type.value == "Producao.csv" or file_type.value == "Comercio.csv":
             # transforma os dados de dataframe para dict
             for idx in range(len(df)-1):
                 row = df.iloc[idx]
                 next_row = df.iloc[idx+1]
+                # checa se o valor da linha é todo maiúsculo e associa ao tipo
                 if row.iloc[2].isupper():
                     tipo = row.iloc[2]
+                    # se o valor da proxima linha for outro tipo, cria um registro para o tipo armazenado
                     if next_row.iloc[2].isupper():
                         for i in range(3, len(row)):
                             data.append({
                                 ds_key: row.iloc[2],
                                 tp_key: tipo,
                                 dt_key: int(df.columns[i]),
-                                qt_key: int(row.iloc[i])
+                                qt_key: float(row.iloc[i])
                             })
                 else:
                     for i in range(3, len(row)):
@@ -104,7 +85,41 @@ class CSVProcessor:
                             ds_key: row.iloc[2],
                             tp_key: tipo,
                             dt_key: int(df.columns[i]),
-                            qt_key: int(row.iloc[i])
+                            qt_key: float(row.iloc[i])
+                        })
+
+        # condicao para processar os dados das tabelas de processamento
+        elif file_type.value in proc_files or file_type.value == "ProcessaViniferas.csv":
+            # checa o id do tipo de arquivo:
+            if file_type.value.find('Americanas') != -1:
+                tipo_uva = "Americanas e híbridas"
+            elif file_type.value.find('Viniferas') != -1:
+                tipo_uva = "Viníferas"
+            elif file_type.value.find('Mesa') != -1:
+                tipo_uva = "Uvas de mesa"
+            elif file_type.value.find('Semclass') != -1:
+                tipo_uva = "Sem classificação"
+                tipo_cultivo = "SEM CLASSIFICAÇÃO"
+
+            tipo_uva_id = TipoUva.query.filter_by(ds_tipo_uva=tipo_uva).first()
+
+            # transforma os dados de dataframe para dict
+            for _, row in df.iterrows():
+                # checa se o valor da linha é todo maiúsculo e associa ao tipo
+                if row.iloc[2].isupper():
+                    tipo_cultivo = row.iloc[2]
+                else:
+                    for i in range(3, len(row)):
+                        # tenta transformar o valor para float e retorna None se não for possível (nd e *)
+                        try:
+                            qt = float(row.iloc[i])
+                        except ValueError:
+                            qt = None
+                        data.append({
+                            tp_key: tipo_uva_id.id_tipo_uva,
+                            ds_key: tipo_cultivo,
+                            dt_key: int(df.columns[i]),
+                            qt_key: qt
                         })
 
         else:
@@ -124,6 +139,7 @@ class CSVProcessor:
 
             # transforma os dados de dataframe para dict
             for _, row in df.iterrows():
+                # faz o loop de dois em dois valores para separar as colunas de quantidade e de valor
                 for i in range(2, len(row) - 1, 2):
                     data.append({
                         ds_key: row.iloc[1].strip(),

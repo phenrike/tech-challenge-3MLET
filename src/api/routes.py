@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identi
 from werkzeug.security import generate_password_hash, check_password_hash
 from services.data_ingestion_service import DataIngestionService
 from flasgger import swag_from
-from api.models import (Usuario, Producao, Processamento, Comercializacao, Importacao, Exportacao)
+from api.models import (Usuario, Producao, Processamento, Comercializacao, Importacao, Exportacao, TipoUva, TipoImpExp)
 from infra.postgres_repository import PostgresRepository
 
 def configure_routes(app):
@@ -120,14 +120,15 @@ def configure_routes(app):
     def producao():
         ano = request.args.get('ano')
         produto = request.args.get('produto')
-        if ano and produto:
-            producao = Producao.query.filter_by(dt_ano=ano, ds_produto=produto).all()
-        elif ano and not produto:
-            producao = Producao.query.filter_by(dt_ano=ano).all()
-        elif not ano and produto:
-            producao = Producao.query.filter_by(ds_produto=produto).all()
+        query = Producao.query
+        if ano:
+            query.filter_by(dt_ano=ano).all()
+        if produto:
+            query.filter_by(ds_produto=produto).all()
+        if not ano and not produto:
+            return jsonify({"message": "You must provide a year or a product"}), 400
         else:
-            return jsonify({"message":"You must provide a year or a product"}), 400
+            producao = query.all()
         producao_dict = [prod.as_dict() for prod in producao]
         return jsonify(producao_dict), 200
 
@@ -144,15 +145,15 @@ def configure_routes(app):
     def comercializacao():
         ano = request.args.get('ano')
         produto = request.args.get('produto')
-        if ano and produto:
-            comercializacao = Comercializacao.query.filter_by(dt_ano=ano, ds_produto=produto).first()
-            return jsonify(comercializacao.as_dict()), 200
-        elif ano and not produto:
-            comercializacao = Comercializacao.query.filter_by(dt_ano=ano).all()
-        elif not ano and produto:
-            comercializacao = Comercializacao.query.filter_by(ds_produto=produto).all()
-        else:
+        query = Comercializacao.query
+        if ano:
+            query.filter_by(dt_ano=ano).all()
+        if produto:
+            query.filter_by(ds_produto=produto).all()
+        if not ano and not produto:
             return jsonify({"message": "You must provide a year or a product"}), 400
+        else:
+            comercializacao = query.all()
         comercializacao_dict = [prod.as_dict() for prod in comercializacao]
         return jsonify(comercializacao_dict), 200
 
@@ -177,7 +178,8 @@ def configure_routes(app):
         if pais:
             query = query.filter_by(ds_pais=pais)
         if tipo_prod:
-            query = query.filter_by(id_tipo_prod_imp_exp=tipo_prod)
+            subquery = TipoImpExp.query.filter_by(ds_tipo_prod_imp_exp=tipo_prod).subquery()
+            query = query.filter_by(id_tipo_prod_imp_exp=subquery.c.id_tipo_prod_imp_exp)
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not pais and not tipo_prod:
@@ -210,7 +212,8 @@ def configure_routes(app):
         if pais:
             query = query.filter_by(ds_pais=pais)
         if tipo_prod:
-            query = query.filter_by(id_tipo_prod_imp_exp=tipo_prod)
+            subquery = TipoImpExp.query.filter_by(ds_tipo_prod_imp_exp=tipo_prod).subquery()
+            query = query.filter_by(id_tipo_prod_imp_exp=subquery.c.id_tipo_prod_imp_exp)
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not pais and not tipo_prod:
@@ -220,3 +223,67 @@ def configure_routes(app):
 
         importacao_dict = [imp.as_dict() for imp in importacao]
         return jsonify(importacao_dict), 200
+
+    @app.route('/processamento', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Processing Data',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def processamento():
+        ano = request.args.get('ano')
+        tipo_uva = request.args.get('tipo_uva')
+        tipo_cultivo = request.args.get('tipo_cultivo')
+        query = Processamento.query
+
+        # adiciona filtros nas consultas
+        if ano:
+            query = query.filter_by(dt_ano=ano)
+        if tipo_uva:
+            subquery = TipoUva.query.filter_by(ds_tipo_uva=tipo_uva).subquery()
+            query = query.filter_by(id_tipo_uva=subquery.c.id_tipo_uva)
+        if tipo_cultivo:
+            query = query.filter_by(ds_cultivo=tipo_cultivo)
+
+        # roda a consulta se tiver pelo menos um filtro ou retorna um erro
+        if not ano and not tipo_uva and not tipo_cultivo:
+            return jsonify({"message": "You must provide a year or a product"}), 400
+        else:
+            processamento = query.all()
+
+        processamento_dict = [proc.as_dict() for proc in processamento]
+        return jsonify(processamento_dict), 200
+
+    @app.route('/tipos_processamento', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Types of Processing Filters (Grape Types)',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def tipos_processamento():
+        tipos_uva = TipoUva.query.all()
+        tipos_dict = [tipo.as_dict() for tipo in tipos_uva]
+        return jsonify(tipos_dict), 200
+
+    @app.route('/tipos_importacao_exportacao', methods=['GET'])
+    # @jwt_required
+    @swag_from({
+        'summary': 'Return Types of Processing Filters (Grape Types)',
+        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
+        'responses': {
+            200: {'description': 'Data returned successfully'},
+            401: {'description': 'Unauthorized'}
+        }
+    })
+    def tipos_importacao_exportacao():
+        tipos_imp_exp = TipoImpExp.query.all()
+        tipos_dict = [tipo.as_dict() for tipo in tipos_imp_exp]
+        return jsonify(tipos_dict), 200

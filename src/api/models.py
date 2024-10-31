@@ -17,10 +17,29 @@ class Producao(db.Model):
 class Processamento(db.Model):
     __tablename__ = 'tbl_processamento'
     id_processamento = db.Column(db.Integer, primary_key=True)
-    ds_cultivo = db.Column(db.String(255), nullable=False)
-    ds_tipo_uva = db.Column(db.String(100), nullable=False)
+    id_tipo_uva = db.Column(db.Integer, ForeignKey('tbl_tipo_uva.id_tipo_uva'), nullable=True)
+    ds_cultivo = db.Column(db.String(100), nullable=False)
     dt_ano = db.Column(db.Integer, nullable=False)
-    qt_processamento = db.Column(db.Float, nullable=False)
+    qt_processamento = db.Column(db.Float, nullable=True)
+
+    # Relacionamento para acessar a descrição
+    tipo_uva = relationship("TipoUva", backref="processamentos")
+
+    @property
+    def descricao_tipo_uva(self):
+        return self.tipo_uva.ds_tipo_uva if self.tipo_uva else None
+
+    def as_dict(self):
+        # Inclui todas as colunas do banco e a descrição do tipo de produto
+        data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        data['descricao_tipo_uva'] = self.descricao_tipo_uva
+        return data
+
+class TipoUva(db.Model):
+    __tablename__ = 'tbl_tipo_uva'
+
+    id_tipo_uva = db.Column(db.Integer, primary_key=True)
+    ds_tipo_uva = db.Column(db.String(100), nullable=False)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

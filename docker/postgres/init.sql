@@ -137,19 +137,6 @@ CREATE TABLE public.tbl_producao (
 );
 
 
--- public.tbl_tipo_cultivo definição
-
--- Drop table
-
--- DROP TABLE public.tbl_tipo_cultivo;
-
-CREATE TABLE public.tbl_tipo_cultivo (
-	id_tipo_cultivo serial4 NOT NULL,
-	ds_tipo_cultivo varchar(100) NOT NULL,
-	CONSTRAINT tbl_tipo_cultivo_pkey PRIMARY KEY (id_tipo_cultivo)
-);
-
-
 -- public.tbl_tipo_uva definição
 
 -- Drop table
@@ -163,21 +150,12 @@ CREATE TABLE public.tbl_tipo_uva (
 );
 
 
--- public.tbl_cultivo definição
-
--- Drop table
-
--- DROP TABLE public.tbl_cultivo;
-
-CREATE TABLE public.tbl_cultivo (
-	id_cultivo serial4 NOT NULL,
-	ds_cultivo varchar(100) NOT NULL,
-	id_tipo_cultivo int4 NOT NULL,
-	id_tipo_uva int4 NOT NULL,
-	CONSTRAINT tbl_cultivo_pkey PRIMARY KEY (id_cultivo),
-	CONSTRAINT fk_tipo_cultivo FOREIGN KEY (id_tipo_cultivo) REFERENCES public.tbl_tipo_cultivo(id_tipo_cultivo),
-	CONSTRAINT fk_tipo_uva FOREIGN KEY (id_tipo_uva) REFERENCES public.tbl_tipo_uva(id_tipo_uva)
-);
+INSERT INTO tbl_tipo_uva (ds_tipo_uva)
+VALUES
+    ('Viníferas'),
+    ('Americanas e híbridas'),
+    ('Uvas de mesa'),
+    ('Sem classificação');
 
 
 -- public.tbl_exportacao definição
@@ -224,11 +202,12 @@ CREATE TABLE public.tbl_importacao (
 
 CREATE TABLE public.tbl_processamento (
 	id_processamento serial4 NOT NULL,
-	id_cultivo int4 NOT NULL,
+	id_tipo_uva int4 NOT NULL,
+    ds_cultivo varchar(100) NOT NULL,
 	dt_ano integer NOT NULL,
 	qt_processamento numeric(15, 2) NULL,
 	CONSTRAINT tbl_processamento_pkey PRIMARY KEY (id_processamento),
-	CONSTRAINT fk_id_cultivo FOREIGN KEY (id_cultivo) REFERENCES public.tbl_cultivo(id_cultivo)
+	CONSTRAINT fk_id_tipo_uva FOREIGN KEY (id_tipo_uva) REFERENCES public.tbl_tipo_uva(id_tipo_uva)
 );
 
 -- public.tbl_usuario definição
