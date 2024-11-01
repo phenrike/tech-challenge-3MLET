@@ -21,25 +21,25 @@ def configure_routes(app):
     
     @app.route('/import-csvs-from-embrapa', methods=['GET'])
     @swag_from({
-      'summary': 'Import data from Embrapa',
+      'summary': 'Importa os dados do site da Embrapa',
       'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
       'responses': {
-      200: {'description': 'CSV files processed and data saved'},
-      401: {'description': 'Unauthorized'},
-      500: {'description': 'Error while processing CSV files'}
+      200: {'description': 'Arquivos CSV processados e dados salvos'},
+      401: {'description': 'Não autorizado'},
+      500: {'description': 'Erro com o processamento dos arquivos CSV'}
       }
     })
     def import_csvs_from_embrapa():
         try:
             DataIngestionService.process_multiple_csv()
-            return jsonify({"message": "CSV files processed and data saved"}), 200
+            return jsonify({"message": "Arquivos CSV processados e dados salvos"}), 200
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            return jsonify({"Erro": str(e)}), 500
         
     @swag_from({
-      'summary': 'Register a new user',
+      'summary': 'Registrar um novo usuário',
       'responses': {
-      201: {'description': 'user successfully registered and saved in the database'}
+      201: {'description': 'Usuário registrado com sucesso no banco de dados'}
       },
       'parameters': [{
       'name': 'body',
@@ -64,14 +64,14 @@ def configure_routes(app):
         novo_usuario = [{"username": username, "password": hashed_password}]
         PostgresRepository.save_data(Usuario, novo_usuario)
 
-        return jsonify({"message": "User successfully registered and saved in the database"}), 201
+        return jsonify({"message": "Usuário registrado com sucesso no banco de dados"}), 201
 
     @app.route('/login', methods=['POST'])
     @swag_from({
       'summary': 'Login route',
       'responses': {
-      200: {'description': 'login successful and jwt generated'},
-      401: {'description': 'Invalid username or password'}
+      200: {'description': 'Login efetuado com sucesso e JWT gerado'},
+      401: {'description': 'Usuário ou senha inválidos'}
       },
       'parameters': [{
       'name': 'body',
@@ -91,16 +91,16 @@ def configure_routes(app):
       user = Usuario.query.filter_by(username=username).first()
       if user and check_password_hash(user.password, password):
         return jsonify(access_token=create_access_token(identity=username)), 200
-      return jsonify({"error": "Invalid username or password"}), 401
+      return jsonify({"Erro": "Usuário ou senha inválidos"}), 401
 
     @app.route('/protected')
     @jwt_required()
     @swag_from({
-        'summary': 'Protected route, accessible only with a valid JWT token.',
+        'summary': 'Rota protegida, acessível somente com um tokenb JWT válido.',
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Success'},
-            401: {'description': 'Unauthorized'}
+            200: {'description': 'Sucesso'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def protected():
@@ -110,11 +110,41 @@ def configure_routes(app):
     @app.route('/producao', methods=['GET'])
     #@jwt_required
     @swag_from({
-        'summary': 'Return Production Data',
+        'summary': 'Retorna dados de produção',
+        'parameters': [
+            {
+                'name': 'ano',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Ano de produção'
+            },
+            {   'name': 'produto',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Produto'
+            }
+        ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            'id': 1,
+                            'pais': 'Brasil',
+                            'ano': '2023',
+                            'produto': 'vinho de mesa',
+                            'quantidade': 1000,
+                            'valor': 5000
+                        }
+                    ]
+                }
+            },
+            400: {'description': 'Você deve fornecer um ano ou produto'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def producao():
@@ -126,7 +156,7 @@ def configure_routes(app):
         if produto:
             query.filter_by(ds_produto=produto).all()
         if not ano and not produto:
-            return jsonify({"message": "You must provide a year or a product"}), 400
+            return jsonify({"message": "Você deve fornecer um ano ou produto"}), 400
         else:
             producao = query.all()
         producao_dict = [prod.as_dict() for prod in producao]
@@ -135,11 +165,41 @@ def configure_routes(app):
     @app.route('/comercializacao', methods=['GET'])
     # @jwt_required
     @swag_from({
-        'summary': 'Return Commercialization Data',
+        'summary': 'Retorno dos dados de comercialização',
+        'parameters': [
+            {
+                'name': 'ano',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Ano de comercialização'
+            },
+            {   'name': 'produto',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Produto comercializado'
+            }
+        ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            'id': 1,
+                            'pais': 'Brasil',
+                            'ano': '2023',
+                            'produto': 'vinho de mesa',
+                            'quantidade': 1000,
+                            'valor': 5000
+                        }
+                    ]
+                }
+            },
+            400: {'description': 'Você deve fornecer um ano ou produto'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def comercializacao():
@@ -151,7 +211,7 @@ def configure_routes(app):
         if produto:
             query.filter_by(ds_produto=produto).all()
         if not ano and not produto:
-            return jsonify({"message": "You must provide a year or a product"}), 400
+            return jsonify({"message": "Você deve fornecer um ano ou produto"}), 400
         else:
             comercializacao = query.all()
         comercializacao_dict = [prod.as_dict() for prod in comercializacao]
@@ -160,11 +220,47 @@ def configure_routes(app):
     @app.route('/exportacao', methods=['GET'])
     # @jwt_required
     @swag_from({
-        'summary': 'Return Exportation Data',
+        'summary': 'Retorna dados de exportação',
+        'parameters': [
+            {
+                'name': 'ano',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Ano de exportação'
+            },
+            {   'name': 'pais',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'País de exportação'
+            },
+            {   'name': 'Tipo de produto',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de produto exportado'
+            }
+        ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            'id': 1,
+                            'pais': 'Brasil',
+                            'ano': '2023',
+                            'produto': 'vinho de mesa',
+                            'quantidade': 1000,
+                            'valor': 5000
+                        }
+                    ]
+                }
+            },
+            400: {'description': 'Você deve fornecer um ano, país ou tipo de produto'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def exportacao():
@@ -183,7 +279,7 @@ def configure_routes(app):
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not pais and not tipo_prod:
-            return jsonify({"message": "You must provide a year or a product"}), 400
+            return jsonify({"message": "Você deve fornecer um ano, país ou tipo de produto"}), 400
         else:
             exportacao = query.all()
 
@@ -193,11 +289,47 @@ def configure_routes(app):
     @app.route('/importacao', methods=['GET'])
     # @jwt_required
     @swag_from({
-        'summary': 'Return Importation Data',
+        'summary': 'Retorna dados de importação',
+        'parameters': [
+            {
+                'name': 'ano',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Ano de importação'
+            },
+            {   'name': 'pais',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'País de importação'
+            },
+            {   'name': 'tipo_prod',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de produto importado'
+            }
+        ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            'id': 1,
+                            'pais': 'Brasil',
+                            'ano': '2023',
+                            'produto': 'vinho de mesa',
+                            'quantidade': 1000,
+                            'valor': 5000
+                        }
+                    ]
+                }
+            },
+            400: {'description': 'Você deve fornecer um ano, país ou tipo de produto'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def importacao():
@@ -217,7 +349,7 @@ def configure_routes(app):
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not pais and not tipo_prod:
-            return jsonify({"message": "You must provide a year or a product"}), 400
+            return jsonify({"message": "Você deve fornecer um ano, país ou tipo de produto"}), 400
         else:
             importacao = query.all()
 
@@ -227,11 +359,47 @@ def configure_routes(app):
     @app.route('/processamento', methods=['GET'])
     # @jwt_required
     @swag_from({
-        'summary': 'Return Processing Data',
+        'summary': 'Retorno de dados de processamento',
+        'parameters': [
+            {
+                'name': 'ano',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Ano de exportação'
+            },
+            {   'name': 'tipo_uva',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de uva processada'
+            },
+            {   'name': 'tipo_cultivo',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de cultivo processado'
+            }
+        ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            'id': 1,
+                            'pais': 'Brasil',
+                            'ano': '2023',
+                            'produto': 'vinho de mesa',
+                            'quantidade': 1000,
+                            'valor': 5000
+                        }
+                    ]
+                }
+            },
+            400: {'description': 'Você deve fornecer um ano, país ou tipo de produto'},
+            401: {'description': 'Não autorizado'}
         }
     })
     def processamento():
@@ -251,7 +419,7 @@ def configure_routes(app):
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not tipo_uva and not tipo_cultivo:
-            return jsonify({"message": "You must provide a year or a product"}), 400
+            return jsonify({"message": "Você deve fornecer um ano, tipo de uva ou tipo de cultivo"}), 400
         else:
             processamento = query.all()
 
