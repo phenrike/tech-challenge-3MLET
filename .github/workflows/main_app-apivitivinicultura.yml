@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python version
         uses: actions/setup-python@v1
@@ -29,14 +28,10 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Set DATABASE_URL environment variable
+      - name: Set environment variable for DATABASE_URL
         env:
           DATABASE_URL: ${{ secrets.AZURE_DB_URL }}
         run: echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
-
-      # Opcional: Adicione uma etapa para executar testes aqui
-      # - name: Run tests
-      #   run: pytest
 
       - name: Zip artifact for deployment
         run: zip -r release.zip . -x "venv/*" "*.git*"
@@ -63,10 +58,10 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'app-apivitivinicultura'  # Nome do seu Web App no Azure
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74CACB41443C455D8364870859C33D52 }}
-          package: '.'  # O pacote é o diretório atual que contém seu código
+          app-name: 'app-apivitivinicultura'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
