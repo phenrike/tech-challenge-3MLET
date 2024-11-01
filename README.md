@@ -11,6 +11,7 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
 - **Docker** 🐳 (**necessário para rodar o projeto**)
 - **GitHub Actions** 🚀 
 - **JWT** 🔑
+- **Azure** ☁️
 
 ## Ambiente Necessário ⚙️
 
