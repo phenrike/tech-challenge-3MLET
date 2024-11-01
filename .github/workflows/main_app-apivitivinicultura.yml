@@ -30,10 +30,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Set DATABASE_URL environment variable
+      - name: Set DATABASE_URL and FLASK_APP environment variables
         env:
           DATABASE_URL: ${{ secrets.AZURE_DB_URL }}
-        run: echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
+          FLASK_APP: src/api/app.py  # Define o caminho completo do módulo Flask
+        run: |
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "FLASK_APP=${{ env.FLASK_APP }}" >> $GITHUB_ENV
 
       # Opcional: Adicione uma etapa para executar testes aqui
       # - name: Run tests
