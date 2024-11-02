@@ -36,7 +36,12 @@ jobs:
       - name: Set DATABASE_URL environment variable
         env:
           DATABASE_URL: ${{ secrets.AZURE_DB_URL }}
-        run: echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
+        run: echo "DATABASE_URL is set"
+
+      - name: Check AZUREAPPSERVICE_PUBLISHPROFILE presence
+        run: echo "Publish profile is set"
+        env:
+          AZUREAPPSERVICE_PUBLISHPROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74CACB41443C455D8364870859C33D52 }}
 
       - name: Zip artifact for deployment
         run: zip -r release.zip * -x "venv/*" "*.git*"
