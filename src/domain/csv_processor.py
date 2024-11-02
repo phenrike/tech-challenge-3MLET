@@ -4,6 +4,7 @@ import pandas as pd
 from io import StringIO
 from api.models import (TipoImpExp, TipoUva )
 
+
 class CSVProcessor:
 
     @staticmethod
@@ -61,7 +62,7 @@ class CSVProcessor:
         except UnicodeDecodeError:
             df = pd.read_csv(csv_file, encoding='latin1', sep=delimiter)
 
-        # Remover espaços no início e fim dos valores em todas as colunas
+# Remover espaços no início e fim dos valores em todas as colunas
         df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
         # condicao para processar os dados das tabelas de producao e comercializacao
         if file_type.value == "Producao.csv" or file_type.value == "Comercio.csv":

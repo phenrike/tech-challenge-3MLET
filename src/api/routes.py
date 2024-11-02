@@ -205,8 +205,8 @@ def configure_routes(app):
                         {
                             "ds_produto": "Tinto",
                             "dt_ano": 1970,
-                            "id_producao": 1,
-                            "qt_producao": 174224052,
+                            "id_comercializacao": 1,
+                            "qt_comercializacao": 83300735,
                             "tp_produto": "VINHO DE MESA"
                         }
                     ]
@@ -266,12 +266,13 @@ def configure_routes(app):
                 'examples': {
                     'application/json': [
                         {
-                            'id': 1,
-                            'pais': 'Brasil',
-                            'ano': '2023',
-                            'produto': 'vinho de mesa',
-                            'quantidade': 1000,
-                            'valor': 5000
+                            "descricao_tipo_produto": "Espumantes",
+                            "ds_pais": "África do Sul",
+                            "dt_ano": 2023,
+                            "id_exportacao": 54,
+                            "id_tipo_prod_imp_exp": 2,
+                            "qt_exportacao": 2,
+                            "vl_exportacao": 44
                         }
                     ]
                 }
@@ -335,12 +336,13 @@ def configure_routes(app):
                 'examples': {
                     'application/json': [
                         {
-                            'id': 1,
-                            'pais': 'Brasil',
-                            'ano': '2023',
-                            'produto': 'vinho de mesa',
-                            'quantidade': 1000,
-                            'valor': 5000
+                            "descricao_tipo_produto": "Espumantes",
+                            "ds_pais": "Africa do Sul",
+                            "dt_ano": 2023,
+                            "id_importacao": 54,
+                            "id_tipo_prod_imp_exp": 2,
+                            "qt_importacao": 7650,
+                            "vl_importacao": 69382
                         }
                     ]
                 }
@@ -405,12 +407,12 @@ def configure_routes(app):
                 'examples': {
                     'application/json': [
                         {
-                            'id': 1,
-                            'pais': 'Brasil',
-                            'ano': '2023',
-                            'produto': 'vinho de mesa',
-                            'quantidade': 1000,
-                            'valor': 5000
+                            "descricao_tipo_uva": "Americanas e híbridas",
+                            "ds_cultivo": "TINTAS",
+                            "dt_ano": 2023,
+                            "id_processamento": 54,
+                            "id_tipo_uva": 2,
+                            "qt_processamento": 0.0
                         }
                     ]
                 }
@@ -431,8 +433,11 @@ def configure_routes(app):
         if tipo_uva:
             subquery = TipoUva.query.filter_by(ds_tipo_uva=tipo_uva).subquery()
             query = query.filter_by(id_tipo_uva=subquery.c.id_tipo_uva)
+        #    subquery = TipoUva.query.filter(func.lower(TipoUva.ds_tipo_uva) == func.lower(tipo_uva)).subquery()
+        #    query = query.filter(TipoUva.id_tipo_uva == subquery.c.id_tipo_uva)
+
         if tipo_cultivo:
-            query = query.filter_by(ds_cultivo=tipo_cultivo)
+            query = query.filter(func.lower(Processamento.ds_cultivo) == func.lower(tipo_cultivo))
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
         if not ano and not tipo_uva and not tipo_cultivo:
@@ -442,7 +447,6 @@ def configure_routes(app):
 
         processamento_dict = [proc.as_dict() for proc in processamento]
         return jsonify(processamento_dict), 200
-
     @app.route('/tipos_processamento', methods=['GET'])
     # @jwt_required
     @swag_from({
@@ -457,7 +461,6 @@ def configure_routes(app):
         tipos_uva = TipoUva.query.all()
         tipos_dict = [tipo.as_dict() for tipo in tipos_uva]
         return jsonify(tipos_dict), 200
-
     @app.route('/tipos_importacao_exportacao', methods=['GET'])
     # @jwt_required
     @swag_from({
