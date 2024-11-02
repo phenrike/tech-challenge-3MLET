@@ -6,6 +6,7 @@ from services.data_ingestion_service import DataIngestionService
 from flasgger import swag_from
 from api.models import (Usuario, Producao, Processamento, Comercializacao, Importacao, Exportacao, TipoUva, TipoImpExp)
 from infra.postgres_repository import PostgresRepository
+from sqlalchemy import func
 
 def configure_routes(app):
     @app.route('/', methods=['GET'])
@@ -124,6 +125,12 @@ def configure_routes(app):
                 'type': 'string',
                 'required': False,
                 'description': 'Produto'
+            },
+            {   'name': 'tipo_produto',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de produto comercializado'
             }
         ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
@@ -133,12 +140,11 @@ def configure_routes(app):
                 'examples': {
                     'application/json': [
                         {
-                            'id': 1,
-                            'pais': 'Brasil',
-                            'ano': '2023',
-                            'produto': 'vinho de mesa',
-                            'quantidade': 1000,
-                            'valor': 5000
+                            "ds_produto": "Tinto",
+                            "dt_ano": 1970,
+                            "id_producao": 1,
+                            "qt_producao": 174224052,
+                            "tp_produto": "VINHO DE MESA"
                         }
                     ]
                 }
@@ -150,13 +156,16 @@ def configure_routes(app):
     def producao():
         ano = request.args.get('ano')
         produto = request.args.get('produto')
+        tipo_produto = request.args.get('tipo_produto')
         query = Producao.query
         if ano:
-            query.filter_by(dt_ano=ano).all()
+            query = query.filter_by(dt_ano=ano)
         if produto:
-            query.filter_by(ds_produto=produto).all()
-        if not ano and not produto:
-            return jsonify({"message": "Você deve fornecer um ano ou produto"}), 400
+            query = query.filter(func.lower(Producao.ds_produto) == func.lower(produto))
+        if tipo_produto:
+            query = query.filter(func.lower(Producao.tp_produto) == func.lower(tipo_produto))
+        if not ano and not produto and not tipo_produto:
+            return jsonify({"message": "Você deve fornecer um ano, produto ou tipo de produto"}), 400
         else:
             producao = query.all()
         producao_dict = [prod.as_dict() for prod in producao]
@@ -179,6 +188,12 @@ def configure_routes(app):
                 'type': 'string',
                 'required': False,
                 'description': 'Produto comercializado'
+            },
+            {   'name': 'tipo_produto',
+                'in': 'query',
+                'type': 'string',
+                'required': False,
+                'description': 'Tipo de produto comercializado'
             }
         ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
@@ -188,30 +203,32 @@ def configure_routes(app):
                 'examples': {
                     'application/json': [
                         {
-                            'id': 1,
-                            'pais': 'Brasil',
-                            'ano': '2023',
-                            'produto': 'vinho de mesa',
-                            'quantidade': 1000,
-                            'valor': 5000
+                            "ds_produto": "Tinto",
+                            "dt_ano": 1970,
+                            "id_producao": 1,
+                            "qt_producao": 174224052,
+                            "tp_produto": "VINHO DE MESA"
                         }
                     ]
                 }
             },
-            400: {'description': 'Você deve fornecer um ano ou produto'},
+            400: {'description': 'Você deve fornecer um ano, produto ou tipo de produto'},
             401: {'description': 'Não autorizado'}
         }
     })
     def comercializacao():
         ano = request.args.get('ano')
         produto = request.args.get('produto')
+        tipo_produto = request.args.get('tipo_produto')
         query = Comercializacao.query
         if ano:
-            query.filter_by(dt_ano=ano).all()
+            query = query.filter_by(dt_ano=ano)
         if produto:
-            query.filter_by(ds_produto=produto).all()
-        if not ano and not produto:
-            return jsonify({"message": "Você deve fornecer um ano ou produto"}), 400
+            query = query.filter(func.lower(Comercializacao.ds_produto) == func.lower(produto))
+        if tipo_produto:
+            query = query.filter(func.lower(Comercializacao.tp_produto) == func.lower(tipo_produto))
+        if not ano and not produto and not tipo_produto:
+            return jsonify({"message": "Você deve fornecer um ano, produto ou tipo de produto"}), 400
         else:
             comercializacao = query.all()
         comercializacao_dict = [prod.as_dict() for prod in comercializacao]

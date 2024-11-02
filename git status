@@ -1,0 +1,98 @@
+[33mcommit 33271794727ec6e490c85ac423a01e1286cc3ae7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Thadeu Soares <thadeu.soares@gmail.com>
+Date:   Mon Oct 14 19:42:33 2024 -0300
+
+    Update README.md
+    
+    Inclusion of the most current version of docker compose usage
+
+[33mcommit dab961d07f93eff8e9a45300924de92b35b51382[m
+Author: Thadeu Soares <thadeu.soares@gmail.com>
+Date:   Mon Oct 14 19:06:05 2024 -0300
+
+    Changed default API port from 5000 to 8081
+
+[33mcommit 177e27eff84bfe0ab40720ff47065d3955fe1a54[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Sun Oct 13 01:20:55 2024 -0300
+
+    Ajuste no procedimento 'Como Executar'
+
+[33mcommit b7968060f023d66f44a5845d2877eedc62a59e72[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Sun Oct 13 01:03:29 2024 -0300
+
+    Adicionando o Swagger e criando o arquivo git_config_and_usage.md com as intruções de configuração e alteração do projeto com o Git
+
+[33mcommit f1f79bb02db37d5602c0de51de8804b49a4bb28f[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Sun Oct 13 00:57:44 2024 -0300
+
+    Adicionando o Swagger e criando o arquivo git_config_and_usage.md com as intruções de configuração e alteração do projeto com o Git
+
+[33mcommit 091a7605d0a629b2f7f1fcdb69243dad7c428d96[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Sun Oct 13 00:26:41 2024 -0300
+
+    Atualização do README com os passos para executar o projeto
+
+[33mcommit 7d97c16a1ed3b45f10d77cc7af05fceae9006fcb[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Sun Oct 13 00:08:23 2024 -0300
+
+    Criação da estrutura inicial da API
+
+[33mcommit e62d05bed10588bf319f989f402aa213d2f9e6df[m
+Author: João Paulo <joaop.goncalves.ribeiro@gmail.com>
+Date:   Wed Oct 9 21:09:54 2024 -0300
+
+    Adicionando passo 6
+
+[33mcommit 7e6ea966f7a144c1ac34c77f6e54de236121d0fa[m
+Author: Thadeu Soares <thadeu.soares@gmail.com>
+Date:   Wed Oct 9 21:05:45 2024 -0300
+
+    Referencia para importacao de arquivos
+
+[33mcommit cbe7748db52ffbca7166c2e86ac0051155556f13[m
+Author: DiogoJesse <rm359597@fiap.com.br>
+Date:   Fri Oct 4 19:52:06 2024 -0300
+
+    Adicionando comandos git
+
+[33mcommit a9dab370c011b97f9121411edd007888c98514ff[m
+Merge: d129697 aa77a94
+Author: DiogoJesse <rm359597@fiap.com.br>
+Date:   Fri Oct 4 19:33:28 2024 -0300
+
+    Resolvendo conflito
+
+[33mcommit d1296977634818a1fa04deb78e71927dd90c442a[m
+Author: DiogoJesse <rm359597@fiap.com.br>
+Date:   Fri Oct 4 19:30:54 2024 -0300
+
+    Adicionando diretório de documentação
+
+[33mcommit aa77a94e426dfd22e75090a127a21a292b52efa6[m
+Author: Leticia Miranda <leticia.miranda02@hotmail.com>
+Date:   Fri Oct 4 19:26:08 2024 -0300
+
+    Adicionando nome dos integrantes do grupo
+
+[33mcommit f7d5909424f312204377ab8c25b2716e0e96bb0a[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Wed Oct 2 21:06:41 2024 -0300
+
+    Correção da URL do projeto
+
+[33mcommit e0400f7ceef691f9394016bc786eb670c5c7a153[m
+Author: paulopsantos <paulo.santos@datashelf.com.br>
+Date:   Wed Oct 2 20:41:04 2024 -0300
+
+    Adicionando informações iniciais do projeto.
+
+[33mcommit c383c07dc5a32ff05e10bd5fff87f62a608e604d[m
+Author: Paulo Henrique Piaunios <paaullo.h@gmail.com>
+Date:   Wed Oct 2 20:39:00 2024 -0300
+
+    Initial commit

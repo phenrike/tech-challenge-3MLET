@@ -61,6 +61,8 @@ class CSVProcessor:
         except UnicodeDecodeError:
             df = pd.read_csv(csv_file, encoding='latin1', sep=delimiter)
 
+        # Remover espaços no início e fim dos valores em todas as colunas
+        df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
         # condicao para processar os dados das tabelas de producao e comercializacao
         if file_type.value == "Producao.csv" or file_type.value == "Comercio.csv":
             # transforma os dados de dataframe para dict
