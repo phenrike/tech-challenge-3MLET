@@ -39,7 +39,7 @@ jobs:
         run: echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip . -x "venv/*" "*.git*"
+        run: zip -r release.zip * -x "venv/*" "*.git*"
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -69,4 +69,4 @@ jobs:
         with:
           app-name: 'app-apivitivinicultura'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74CACB41443C455D8364870859C33D52 }}
-          package: 'release.zip'
+          package: '.'
