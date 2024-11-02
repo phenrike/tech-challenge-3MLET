@@ -70,4 +70,3 @@ jobs:
           app-name: 'app-apivitivinicultura'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74CACB41443C455D8364870859C33D52 }}
           package: 'release.zip'
-          startup-command: 'python src/api/app.py'
