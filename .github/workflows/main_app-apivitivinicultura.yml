@@ -38,10 +38,6 @@ jobs:
           DATABASE_URL: ${{ secrets.AZURE_DB_URL }}
         run: echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> $GITHUB_ENV
 
-      # Opcional: Adicione uma etapa para executar testes aqui
-      # - name: Run tests
-      #   run: pytest
-
       - name: Zip artifact for deployment
         run: zip -r release.zip . -x "venv/*" "*.git*"
 
@@ -71,6 +67,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'app-apivitivinicultura'  # Nome do seu Web App no Azure
+          app-name: 'app-apivitivinicultura'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74CACB41443C455D8364870859C33D52 }}
-          package: 'api.app'  # O pacote é o diretório atual que contém seu código
+          package: 'release.zip'
+          startup-command: 'python src/api/app.py'
