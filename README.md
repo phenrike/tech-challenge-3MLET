@@ -68,7 +68,7 @@ Este repositório contém o projeto desenvolvido como parte do **Tech Challenge*
      ```
 
 3. **Acessar a API no navegador**:
-<http://127.0.0.1:8081/apidocs/>
+<http://127.0.0.1:8080/apidocs/>
 
 4. **Parar a execução da API e do banco de dados**:
 
