@@ -30,11 +30,6 @@ jobs:
       - name: Set up environment variables
         run: echo "DATABASE_URL=${{ secrets.AZURE_DB_URL }}" >> $GITHUB_ENV
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      # - name: Run tests
-      #   run: |
-      #     pytest  # Ajuste conforme sua ferramenta de testes
-
       - name: Zip artifact for deployment
         run: zip -r release.zip . -x "venv/*" # Exclui o diretório do ambiente virtual
 
@@ -67,4 +62,9 @@ jobs:
           app-name: 'app-apivitivinicultura'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_124DF55988FE492DAC3E96E947BA7582 }}
-          startup-command: 'gunicorn --bind 0.0.0.0:8000 src.api.app:app' # Ajuste o caminho conforme necessário
+
+      - name: Set startup command
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az webapp config set --name app-apivitivinicultura --resource-group rg-apivitivinicultura --startup-file "gunicorn --bind 0.0.0.0:8000 src.api.app:app"
