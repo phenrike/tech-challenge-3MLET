@@ -1,0 +1,1 @@
+python -m flask --app src/api/app run --host=0.0.0.0
