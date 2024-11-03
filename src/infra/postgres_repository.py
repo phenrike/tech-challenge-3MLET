@@ -27,3 +27,24 @@ class PostgresRepository:
         finally:
             # Fecha a sessão para liberar recursos
             db.session.close()
+
+    @staticmethod
+    def clear_data(model):
+        """
+        Limpa as tabelas do banco de dados.        
+        """
+        try:
+            # Delete all records from the model's table
+            db.session.query(model).delete()
+            # Commit the changes to the database
+            db.session.commit()
+            print("Data cleared successfully.")
+        
+        except Exception as e:
+            # Rollback in case of error
+            db.session.rollback()
+            print(f"Error while clearing data: {e}")
+        
+        finally:
+            # Close the session to free resources
+            db.session.close()

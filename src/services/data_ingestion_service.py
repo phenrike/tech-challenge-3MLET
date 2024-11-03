@@ -16,14 +16,19 @@ class DataIngestionService:
             # 2. Processar os dados do CSV
             processed_data = CSVProcessor.process_csv_data(csv_data, file_type)
 
-            # 3. Salvar os dados no banco de dados
+            # 3. Limpar e Salvar os dados no banco de dados
             if file_type.value == 'Producao.csv':
+                PostgresRepository.clear_data(Producao)
                 PostgresRepository.save_data(Producao, processed_data)
             elif file_type.value == 'Comercio.csv':
+                PostgresRepository.clear_data(Comercializacao)
                 PostgresRepository.save_data(Comercializacao, processed_data)
             elif file_type.value.find('Imp') != -1:
+                PostgresRepository.clear_data(Importacao)
                 PostgresRepository.save_data(Importacao, processed_data)
             elif file_type.value.find('Exp') != -1:
+                PostgresRepository.clear_data(Exportacao)
                 PostgresRepository.save_data(Exportacao, processed_data)
             else:
+                PostgresRepository.clear_data(Processamento)
                 PostgresRepository.save_data(Processamento, processed_data)
