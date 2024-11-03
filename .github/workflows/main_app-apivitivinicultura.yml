@@ -33,6 +33,7 @@ jobs:
       - name: Set up environment variables
         run: echo "DATABASE_URL=${{ secrets.AZURE_DB_URL }}" >> $GITHUB_ENV
 
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
         run: zip -r release.zip .
 
