@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from flask import Flask
 from infra.db_connection import init_db
 from flask_jwt_extended import JWTManager
-from routes import configure_routes
+from api.routes import configure_routes
 
 def create_app():
     app = Flask(__name__)
@@ -40,5 +40,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    # app.run(debug=True)
     app.run(host="0.0.0.0", port=8081, debug=True)
