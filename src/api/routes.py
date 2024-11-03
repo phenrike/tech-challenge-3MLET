@@ -1,27 +1,37 @@
 # src/api/routes.py
-from flask import jsonify, request
+from flask import jsonify, request, Flask
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from services.data_ingestion_service import DataIngestionService
-from flasgger import swag_from
+from flasgger import swag_from, Swagger
 from api.models import (Usuario, Producao, Processamento, Comercializacao, Importacao, Exportacao, TipoUva, TipoImpExp)
 from infra.postgres_repository import PostgresRepository
 from sqlalchemy import func
 
+app = Flask(__name__)
+swagger = Swagger(app, template={
+    "swagger": "2.0",
+    "info": {
+        "title": "API Documentação",
+        "description": "Documentação da API",
+        "version": "1.0.0"
+        },
+        "tags": [
+            {"name": "Importação de dados", "description": "Endpoint para a importação de dados do site da Embrapa", "x-tag-order": 1},
+            {"name": "Autenticação", "description": "Endpoints relacionados à autenticação", "x-tag-order": 2},
+            {"name": "Produção", "description": "Endpoint relacionado à produção", "x-tag-order": 3},
+            {"name": "Processamento", "description": "Endpoints relacionados ao processamento", "x-tag-order": 4},
+            {"name": "Comercialização", "description": "Endpoint relacionados à comercialização", "x-tag-order": 5},
+            {"name": "Importação e Exportação", "description": "Endpoints relacionados à importação e exportação", "x-tag-order": 6}          
+        ]
+    })
+
+
 def configure_routes(app):
-    @app.route('/', methods=['GET'])
-    def index():
-        """
-        Index route
-        ---
-        responses:
-          200:
-            description: Welcome message
-        """
-        return "Tech Challenge - API de Vitivinicultura"
-    
+       
     @app.route('/import-csvs-from-embrapa', methods=['GET'])
     @swag_from({
+      'tags': ['Importação de dados'],
       'summary': 'Importa os dados do site da Embrapa',
       'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
       'responses': {
@@ -38,6 +48,7 @@ def configure_routes(app):
             return jsonify({"Erro": str(e)}), 500
         
     @swag_from({
+      'tags': ['Autenticação'],
       'summary': 'Registrar um novo usuário',
       'responses': {
       201: {'description': 'Usuário registrado com sucesso no banco de dados'}
@@ -69,6 +80,7 @@ def configure_routes(app):
 
     @app.route('/login', methods=['POST'])
     @swag_from({
+      'tags': ['Autenticação'],
       'summary': 'Login route',
       'responses': {
       200: {'description': 'Login efetuado com sucesso e JWT gerado'},
@@ -94,23 +106,14 @@ def configure_routes(app):
         return jsonify(access_token=create_access_token(identity=username)), 200
       return jsonify({"Erro": "Usuário ou senha inválidos"}), 401
 
-    @app.route('/protected')
-    @jwt_required()
-    @swag_from({
-        'summary': 'Rota protegida, acessível somente com um tokenb JWT válido.',
-        'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
-        'responses': {
-            200: {'description': 'Sucesso'},
-            401: {'description': 'Não autorizado'}
-        }
-    })
     def protected():
         current_user = get_jwt_identity()
         return jsonify(logged_in_as=current_user), 200
 
     @app.route('/producao', methods=['GET'])
-    #@jwt_required
+    @jwt_required()
     @swag_from({
+        'tags': ['Produção'],
         'summary': 'Retorna dados de produção',
         'parameters': [
             {
@@ -172,8 +175,9 @@ def configure_routes(app):
         return jsonify(producao_dict), 200
 
     @app.route('/comercializacao', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
+        'tags': ['Comercialização'],
         'summary': 'Retorno dos dados de comercialização',
         'parameters': [
             {
@@ -235,8 +239,9 @@ def configure_routes(app):
         return jsonify(comercializacao_dict), 200
 
     @app.route('/exportacao', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
+        'tags': ['Importação e Exportação'],
         'summary': 'Retorna dados de exportação',
         'parameters': [
             {
@@ -252,7 +257,7 @@ def configure_routes(app):
                 'required': False,
                 'description': 'País de exportação'
             },
-            {   'name': 'Tipo de produto',
+            {   'name': 'tipo_prod',
                 'in': 'query',
                 'type': 'string',
                 'required': False,
@@ -284,7 +289,7 @@ def configure_routes(app):
     def exportacao():
         ano = request.args.get('ano')
         pais = request.args.get('pais')
-        tipo_prod = request.args.get('tipo')
+        tipo_prod = request.args.get('tipo_prod')
         query = Exportacao.query
         # adiciona filtros nas consultas
         if ano:
@@ -305,8 +310,9 @@ def configure_routes(app):
         return jsonify(exportacao_dict), 200
 
     @app.route('/importacao', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
+        'tags': ['Importação e Exportação'],
         'summary': 'Retorna dados de importação',
         'parameters': [
             {
@@ -376,8 +382,9 @@ def configure_routes(app):
         return jsonify(importacao_dict), 200
 
     @app.route('/processamento', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
+        'tags': ['Processamento'],
         'summary': 'Retorno de dados de processamento',
         'parameters': [
             {
@@ -447,14 +454,26 @@ def configure_routes(app):
 
         processamento_dict = [proc.as_dict() for proc in processamento]
         return jsonify(processamento_dict), 200
+    
     @app.route('/tipos_processamento', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
-        'summary': 'Return Types of Processing Filters (Grape Types)',
+        'tags': ['Processamento'],
+        'summary': 'Retorna os tipos de uvas processadas do endpoint Processamento',
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            "ds_tipo_uva": "Viníferas",
+                            "id_tipo_uva": 1
+                        }
+                    ]
+                }
+            },
+            401: {'description': 'Não autorizado'}
         }
     })
     def tipos_processamento():
@@ -462,13 +481,24 @@ def configure_routes(app):
         tipos_dict = [tipo.as_dict() for tipo in tipos_uva]
         return jsonify(tipos_dict), 200
     @app.route('/tipos_importacao_exportacao', methods=['GET'])
-    # @jwt_required
+    @jwt_required()
     @swag_from({
-        'summary': 'Return Types of Processing Filters (Grape Types)',
+        'tags': ['Importação e Exportação'],
+        'summary': 'Retorna os tipos de uvas processadas dos endpoints Importação e Exportação',
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
         'responses': {
-            200: {'description': 'Data returned successfully'},
-            401: {'description': 'Unauthorized'}
+            200: {
+                'description': 'Dados retornados com sucesso',
+                'examples': {
+                    'application/json': [
+                        {
+                            "ds_tipo_prod_imp_exp": "Vinhos de Mesa",
+                            "id_tipo_prod_imp_exp": 1
+                        }
+                    ]
+                }
+            },
+            401: {'description': 'Não autorizado'}
         }
     })
     def tipos_importacao_exportacao():
