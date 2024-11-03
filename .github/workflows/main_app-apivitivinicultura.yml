@@ -22,28 +22,27 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Set up environment variables
         run: echo "DATABASE_URL=${{ secrets.AZURE_DB_URL }}" >> $GITHUB_ENV
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      # - name: Run tests
+      #   run: |
+      #     pytest  # Ajuste conforme sua ferramenta de testes
+
       - name: Zip artifact for deployment
-        run: zip -r release.zip .
+        run: zip -r release.zip . -x "venv/*" # Exclui o diretório do ambiente virtual
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
         with:
           name: python-app
-          path: |
-            release.zip
-            !venv/
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -68,3 +67,4 @@ jobs:
           app-name: 'app-apivitivinicultura'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_124DF55988FE492DAC3E96E947BA7582 }}
+          startup-command: 'gunicorn --bind 0.0.0.0:8000 src.api.app:app' # Ajuste o caminho conforme necessário
