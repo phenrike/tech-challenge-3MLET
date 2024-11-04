@@ -1,5 +1,5 @@
 # src/api/routes.py
-from flask import jsonify, request, Flask
+from flask import jsonify, request, Flask, render_template
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from services.data_ingestion_service import DataIngestionService
