@@ -105,6 +105,8 @@ Esta API não consulta dados diretamente no site do Embrapa, ela faz o download 
 
 !["Fluxo do deploy"](docs/Fluxo_de_deploy.png)
 
+## **Detalhamento dos endpoints**
+
 ### **Endpoint: Registro de usuário**
 
 Somente usuários cadastrados no banco de dados podem acessar a API.
