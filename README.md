@@ -165,7 +165,93 @@ Este endpoint permite a pesquisa de dados de produção baseados em ano ou produ
 - Código `200` - Data returned successfully
 - Código `400` - You must provide a year or a product
 - Código `401`- Unauthorized
-_________________________________________________________________________________________
+
+### **Endpoint: Processamento**
+
+Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo da uva ou tipo de cultivo.
+
+**Requisição:**
+
+- URL: `api/processamento`
+- Método: GET
+- Parâmetros:
+  - `ano`: Ano de processamento.
+  - `tipo_uva`: Tipo de uva processada.
+  - `tipo_cultivo`: Tipo de cultivo processado.
+
+**Resposta:**
+
+- Código `200` - Data returned successfully
+- Código `400` - You must provide a year or a product
+- Código `401`- Unauthorized
+
+### **Endpoint: Tipos Processamento**
+
+Este endpoint permite a pesquisa dos tipos de uvas processadas no endpoint de processamento.
+
+**Requisição:**
+
+- URL: `api/tipos_processamento`
+- Método: GET
+
+**Resposta:**
+
+- Código `200` - Data returned successfully
+- Código `401`- Unauthorized
+
+### **Endpoint: Importação**
+
+Este endpoint permite a pesquisa de dados importados baseados em ano, país e tipo de produto.
+
+**Requisição:**
+
+- URL: `api/importacao`
+- Método: GET
+- Parâmetros:
+  - `ano`: Ano da importação.
+  - `pais`: País de importação.
+  - `tipo_prod`: Tipo de produto importado.
+
+**Resposta:**
+
+- Código `200` - Data returned successfully
+- Código `400` - You must provide a year or a product
+- Código `401`- Unauthorized
+
+### **Endpoint: Exportação**
+
+Este endpoint permite a pesquisa de dados exportados baseados em ano, país e tipo de produto.
+
+**Requisição:**
+
+- URL: `api/exportacao`
+- Método: GET
+- Parâmetros:
+  - `ano`: Ano da exportação.
+  - `pais`: País de exportação.
+  - `tipo_prod`: Tipo de produto exportado.
+
+**Resposta:**
+
+- Código `200` - Data returned successfully
+- Código `400` - You must provide a year or a product
+- Código `401`- Unauthorized
+
+### **Endpoint: Tipos Importação e Exportação**
+
+Este endpoint permite a pesquisa dos tipos de uvas importadas/exportadas no endpoint de importação/exportação.
+
+**Requisição:**
+
+- URL: `api/tipos_importacao_exportacao`
+- Método: GET
+
+**Resposta:**
+
+- Código `200` - Data returned successfully
+- Código `401`- Unauthorized
+
+_________________________________________________________
 ## Integrantes
 
 1. Paulo Henrique Piaunios dos Santos  
