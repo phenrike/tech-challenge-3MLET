@@ -54,8 +54,11 @@
             padding: 0;
         }
         .team-members li::before {
-            content: "👩‍💻 ";
+            content: "👤 ";
             color: #007bff;
+        }
+        .team-members li.female::before {
+            content: "👩‍💻 ";
         }
     </style>
 </head>
@@ -110,7 +113,7 @@
         <h2 class="mt-4">Integrantes</h2>
         <ul class="team-members">
             <li>Paulo Henrique Piaunios dos Santos</li>
-            <li>Letícia Miranda</li>
+            <li class="female">Letícia Miranda</li>
             <li>Diogo Octaviano Jesse</li>
             <li>João Paulo Gonçalves Ribeiro</li>
             <li>Thadeu Pereira de Alencar Soares</li>
