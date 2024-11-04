@@ -122,7 +122,7 @@ Somente usuários cadastrados no banco de dados podem acessar a API.
 **Resposta:**
 
 - Código `201` - 	Usuário registrado com sucesso no banco de dados
-
+_________________________________________________________________________________________
 ### **Endpoint: Autenticação**
 
 A autenticação na API é feita através de JWT (Jason Web Token).
@@ -139,7 +139,7 @@ A autenticação na API é feita através de JWT (Jason Web Token).
 
 - Código `200` - Login efetuado com sucesso e JWT gerado
 - Código `401` - Usuário ou senha inválidos
-
+_________________________________________________________________________________________
 ### **Endpoint: Comercialização**
 
 Este endpoint permite a pesquisa de dados comerciais baseados em ano, produto ou tipo de produto.
@@ -158,7 +158,7 @@ Este endpoint permite a pesquisa de dados comerciais baseados em ano, produto ou
 - Código `200` - Dados retornados com sucesso
 - Código `400` - Você deve fornecer um ano, produto ou tipo de produto
 - Código `401` - Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Produção**
 
 Este endpoint permite a pesquisa de dados de produção baseados em ano, produto ou tipo de produto.
@@ -177,7 +177,7 @@ Este endpoint permite a pesquisa de dados de produção baseados em ano, produto
 - Código `200` - Dados retornados com sucesso
 - Código `400` - Você deve fornecer um ano, produto ou tipo de produto
 - Código `401` - Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Processamento**
 
 Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo da uva ou tipo de cultivo.
@@ -196,7 +196,7 @@ Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo
 - Código `200` - Dados retornados com sucesso
 - Código `400` - Você deve fornecer um ano, tipo de uva ou tipo de cultivo
 - Código `401` - Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Tipos Processamento**
 
 Este endpoint permite a pesquisa dos tipos de uvas processadas no endpoint de processamento.
@@ -210,7 +210,7 @@ Este endpoint permite a pesquisa dos tipos de uvas processadas no endpoint de pr
 
 - Código `200` - Dados retornados com sucesso
 - Código `401`- Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Importação**
 
 Este endpoint permite a pesquisa de dados importados baseados em ano, país e tipo de produto.
@@ -229,7 +229,7 @@ Este endpoint permite a pesquisa de dados importados baseados em ano, país e ti
 - Código `200` - Dados retornados com sucesso
 - Código `400` - Você deve fornecer um ano, país ou tipo de produto
 - Código `401` - Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Exportação**
 
 Este endpoint permite a pesquisa de dados exportados baseados em ano, país e tipo de produto.
@@ -248,7 +248,7 @@ Este endpoint permite a pesquisa de dados exportados baseados em ano, país e ti
 - Código `200` - Dados retornados com sucesso
 - Código `400` - Você deve fornecer um ano, país ou tipo de produto
 - Código `401` - Não autorizado
-
+_________________________________________________________________________________________
 ### **Endpoint: Tipos Importação e Exportação**
 
 Este endpoint permite a pesquisa dos tipos de uvas importadas/exportadas no endpoint de importação/exportação.
