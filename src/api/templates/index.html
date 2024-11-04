@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Challenge - API de Vitivinicultura</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .swagger-link {
+            color: #fff;
+            background-color: #28a745;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .swagger-link:hover {
+            background-color: #218838;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        ul li, ol li {
+            margin-bottom: 8px;
+        }
+        .technologies {
+            list-style: none;
+            padding: 0;
+        }
+        .technologies li::before {
+            content: "✔️ ";
+            color: #007bff;
+        }
+        .team-members {
+            list-style: none;
+            padding: 0;
+        }
+        .team-members li::before {
+            content: "👤 ";
+            color: #007bff;
+        }
+        .team-members li.female::before {
+            content: "👩‍💻 ";
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="text-center">Tech Challenge - API de Vitivinicultura</h1>
+        <p>Projeto desenvolvido como parte do <strong>Tech Challenge</strong> da Pos Tech FIAP Fase 1, uma atividade integradora que visa aplicar os conhecimentos adquiridos em diversas disciplinas. O objetivo é criar uma <strong>API REST em Python</strong> que consulta e disponibiliza os dados de vitivinicultura da <strong>Embrapa</strong>. Futuramente, essa API alimentará um modelo de <strong>Machine Learning</strong>, focado na análise e processamento de dados.</p>
+
+        <h2>Explore a API de Vitivinicultura</h2>
+        <p>Consulte dados vitivinícolas de forma prática e rápida. Acesse a documentação completa e teste os endpoints diretamente.</p>
+        <a href="https://azapp-apivitivinicultura.azurewebsites.net/apidocs/" class="swagger-link" target="_blank">Explore a API no Swagger</a>
+
+        <h2 class="mt-4">Tecnologias Usadas 🛠️</h2>
+        <ul class="technologies">
+            <li><strong>Python 3.12</strong> 🐍</li>
+            <li><strong>Flask</strong> 🌐</li>
+            <li><strong>PostgreSQL</strong> 🐘</li>
+            <li><strong>Docker</strong> 🐳 (necessário para rodar o projeto)</li>
+            <li><strong>GitHub Actions</strong> 🚀</li>
+            <li><strong>JWT</strong> 🔑</li>
+            <li><strong>Azure</strong> ☁️</li>
+        </ul>
+
+        <h2 class="mt-4">Funcionalidades</h2>
+        <ul>
+            <li>Consultas aos dados da Embrapa, incluindo:
+                <ul>
+                    <li>Produção</li>
+                    <li>Processamento</li>
+                    <li>Comercialização</li>
+                    <li>Importação</li>
+                    <li>Exportação</li>
+                </ul>
+            </li>
+            <li>API documentada para facilitar o uso e integração.</li>
+            <li>Suporte à autenticação JWT.</li>
+            <li>Planejamento da arquitetura para ingestão de dados e deploy da API.</li>
+            <li>MVP disponível com deploy em ambiente compartilhável.</li>
+        </ul>
+
+        <h2 class="mt-4">Objetivos do Projeto</h2>
+        <ol>
+            <li><strong>Criar uma API REST em Python</strong> que consulte dados diretamente do site da Embrapa.</li>
+            <li><strong>Documentar a API</strong> para facilitar sua integração por outros desenvolvedores.</li>
+            <li><strong>Implementar autenticação</strong> (opcional, recomendada JWT) para proteger as rotas da API.</li>
+            <li><strong>Desenhar a arquitetura do projeto</strong>, incluindo um plano de deploy e ingestão dos dados até a integração com um futuro modelo de Machine Learning.</li>
+            <li><strong>Deploy do MVP</strong>, com um link compartilhável e um repositório no GitHub.</li>
+            <li><strong>Vídeo de 5 minutos</strong>, apresentando o desenvolvimento do projeto e os resultados.</li>
+        </ol>
+
+        <h2 class="mt-4">Integrantes</h2>
+        <ul class="team-members">
+            <li>Paulo Henrique Piaunios dos Santos</li>
+            <li class="female">Letícia Miranda</li>
+            <li>Diogo Octaviano Jesse</li>
+            <li>João Paulo Gonçalves Ribeiro</li>
+            <li>Thadeu Pereira de Alencar Soares</li>
+        </ul>
+    </div>
+
+</body>
+</html>
