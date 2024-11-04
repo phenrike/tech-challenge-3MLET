@@ -11,4 +11,7 @@ db = SQLAlchemy()
 def init_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://username:password@localhost/dbname')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
+    try:
+        db.init_app(app)
+    except Exception as e:
+        print(f"Error initializing database: {e}")
