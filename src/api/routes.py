@@ -26,8 +26,10 @@ swagger = Swagger(app, template={
         ]
     })
 
-
 def configure_routes(app):
+    @app.route('/')
+    def index():
+        return render_template('index.html')
        
     @app.route('/import-csvs-from-embrapa', methods=['GET'])
     @swag_from({
