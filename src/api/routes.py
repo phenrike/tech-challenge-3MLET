@@ -26,7 +26,6 @@ swagger = Swagger(app, template={
         ]
     })
 
-
 def configure_routes(app):
        
     @app.route('/import-csvs-from-embrapa', methods=['GET'])
@@ -133,7 +132,7 @@ def configure_routes(app):
                 'in': 'query',
                 'type': 'string',
                 'required': False,
-                'description': 'Tipo de produto comercializado'
+                'description': 'Tipo de produto produzido'
             }
         ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
@@ -152,7 +151,7 @@ def configure_routes(app):
                     ]
                 }
             },
-            400: {'description': 'Você deve fornecer um ano ou produto'},
+            400: {'description': 'Você deve fornecer um ano, produto ou tipo de produto'},
             401: {'description': 'Não autorizado'}
         }
     })
@@ -392,7 +391,7 @@ def configure_routes(app):
                 'in': 'query',
                 'type': 'string',
                 'required': False,
-                'description': 'Ano de exportação'
+                'description': 'Ano de processamento'
             },
             {   'name': 'tipo_uva',
                 'in': 'query',
@@ -424,7 +423,7 @@ def configure_routes(app):
                     ]
                 }
             },
-            400: {'description': 'Você deve fornecer um ano, país ou tipo de produto'},
+            400: {'description': 'Você deve fornecer um ano, tipo de uva ou tipo de cultivo'},
             401: {'description': 'Não autorizado'}
         }
     })
