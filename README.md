@@ -103,7 +103,7 @@ Esta API não consulta dados diretamente no site do Embrapa, ela faz o download 
 
 ### **Desenho da arquitetura: Fluxo do deploy**
 
-!["Fluxo do deploy"](docs/Fluxo_de_deploy.jpg)
+!["Fluxo do deploy"](docs/Fluxo_de_deploy.png)
 
 ### **Endpoint: Registro de usuário**
 
