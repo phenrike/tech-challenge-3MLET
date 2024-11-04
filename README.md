@@ -251,7 +251,7 @@ Este endpoint permite a pesquisa dos tipos de uvas importadas/exportadas no endp
 - Código `200` - Data returned successfully
 - Código `401`- Unauthorized
 
-_________________________________________________________
+_______________________________________________________________
 ## Integrantes
 
 1. Paulo Henrique Piaunios dos Santos  
