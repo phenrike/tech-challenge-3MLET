@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Challenge - API de Vitivinicultura</title>
+    <title>Bem-vindo à API de Vitivinicultura</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -23,17 +23,25 @@
         h1, h2 {
             color: #007bff;
         }
-        .swagger-link {
+        .swagger-link, .github-link {
             color: #fff;
-            background-color: #28a745;
             padding: 10px 15px;
             text-decoration: none;
             border-radius: 4px;
             display: inline-block;
             margin-top: 10px;
         }
+        .swagger-link {
+            background-color: #28a745;
+        }
         .swagger-link:hover {
             background-color: #218838;
+        }
+        .github-link {
+            background-color: #333;
+        }
+        .github-link:hover {
+            background-color: #444;
         }
         ul, ol {
             padding-left: 20px;
@@ -71,13 +79,14 @@
         <h2>Explore a API de Vitivinicultura</h2>
         <p>Consulte dados vitivinícolas de forma prática e rápida. Acesse a documentação completa e teste os endpoints diretamente.</p>
         <a href="https://azapp-apivitivinicultura.azurewebsites.net/apidocs/" class="swagger-link" target="_blank">Explore a API no Swagger</a>
+        <a href="https://github.com/phenrike/tech-challenge-3MLET" class="github-link" target="_blank">Código Fonte no GitHub</a>
 
         <h2 class="mt-4">Tecnologias Usadas 🛠️</h2>
         <ul class="technologies">
             <li><strong>Python 3.12</strong> 🐍</li>
             <li><strong>Flask</strong> 🌐</li>
             <li><strong>PostgreSQL</strong> 🐘</li>
-            <li><strong>Docker</strong> 🐳 (necessário para rodar o projeto)</li>
+            <li><strong>Docker</strong> 🐳</li>
             <li><strong>GitHub Actions</strong> 🚀</li>
             <li><strong>JWT</strong> 🔑</li>
             <li><strong>Azure</strong> ☁️</li>
