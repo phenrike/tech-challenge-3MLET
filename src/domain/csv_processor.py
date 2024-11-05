@@ -64,10 +64,7 @@ class CSVProcessor:
         except UnicodeDecodeError:
             df = pd.read_csv(csv_file, encoding='latin1', sep=delimiter)
 
-        # tratamento de dados faltantes para substituição durante o processamento
-        df.fillna(value='*', inplace=True)
-
-# Remover espaços no início e fim dos valores em todas as colunas
+        # Remover espaços no início e fim dos valores em todas as colunas
         df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
         # condicao para processar os dados das tabelas de producao e comercializacao
         if file_type.value == "Producao.csv" or file_type.value == "Comercio.csv":
@@ -98,6 +95,9 @@ class CSVProcessor:
 
         # condicao para processar os dados das tabelas de processamento
         elif file_type.value in proc_files or file_type.value == "ProcessaViniferas.csv":
+            # trata dados faltantes para processamento posterior
+            df.fillna(value='*', inplace=True)
+
             # checa o id do tipo de arquivo:
             if file_type.value.find('Americanas') != -1:
                 tipo_uva = "Americanas e híbridas"
@@ -133,6 +133,8 @@ class CSVProcessor:
                         })
 
         else:
+            # trata dados faltantes para processamento posterior
+            df.fillna(value='*', inplace=True)
             # checa o id do tipo de arquivo:
             if file_type.value.find('Vinho') != -1:
                 tipo = "Vinhos de Mesa"
@@ -151,12 +153,18 @@ class CSVProcessor:
             for _, row in df.iterrows():
                 # faz o loop de dois em dois valores para separar as colunas de quantidade e de valor
                 for i in range(2, len(row) - 1, 2):
+                    # tenta transformar o valor para float e retorna None se não for possível (*)
+                    if row.iloc[i+1] == '*':
+                        vl = None
+                    else:
+                        vl = row.iloc[i+1] # retorna o valor de importacao/exportacao
+
                     data.append({
                         ds_key: row.iloc[1].strip(),
                         tp_key: tipo_id.id_tipo_prod_imp_exp,
                         dt_key: df.columns[i],
                         qt_key: row.iloc[i],
-                        vl_key: row.iloc[i+1]
+                        vl_key: vl
                     })
 
         return data
