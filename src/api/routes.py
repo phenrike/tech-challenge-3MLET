@@ -135,7 +135,7 @@ def configure_routes(app):
                 'in': 'query',
                 'type': 'string',
                 'required': False,
-                'description': 'Tipo de produto comercializado'
+                'description': 'Tipo de produto produzido'
             }
         ],
         'security': [{'Bearer': []}],  # Documenta a necessidade de autenticação
@@ -154,7 +154,7 @@ def configure_routes(app):
                     ]
                 }
             },
-            400: {'description': 'Você deve fornecer um ano ou produto'},
+            400: {'description': 'Você deve fornecer um ano, produto ou tipo de produto'},
             401: {'description': 'Não autorizado'}
         }
     })
@@ -394,13 +394,19 @@ def configure_routes(app):
                 'in': 'query',
                 'type': 'string',
                 'required': False,
-                'description': 'Ano de exportação'
+                'description': 'Ano de processamento'
             },
             {   'name': 'tipo_uva',
                 'in': 'query',
                 'type': 'string',
                 'required': False,
                 'description': 'Tipo de uva processada'
+            },
+            {'name': 'tipo_produto',
+             'in': 'query',
+             'type': 'string',
+             'required': False,
+             'description': 'Tipo de produto processado'
             },
             {   'name': 'tipo_cultivo',
                 'in': 'query',
@@ -418,6 +424,7 @@ def configure_routes(app):
                         {
                             "descricao_tipo_uva": "Americanas e híbridas",
                             "ds_cultivo": "TINTAS",
+                            "ds_produto": "Aramon",
                             "dt_ano": 2023,
                             "id_processamento": 54,
                             "id_tipo_uva": 2,
@@ -426,7 +433,7 @@ def configure_routes(app):
                     ]
                 }
             },
-            400: {'description': 'Você deve fornecer um ano, país ou tipo de produto'},
+            400: {'description': 'Você deve fornecer um ano, tipo de uva, tipo de produto ou tipo de cultivo'},
             401: {'description': 'Não autorizado'}
         }
     })
@@ -434,6 +441,7 @@ def configure_routes(app):
         ano = request.args.get('ano')
         tipo_uva = request.args.get('tipo_uva')
         tipo_cultivo = request.args.get('tipo_cultivo')
+        tipo_produto = request.args.get('tipo_produto')
         query = Processamento.query
 
         # adiciona filtros nas consultas
@@ -442,15 +450,14 @@ def configure_routes(app):
         if tipo_uva:
             subquery = TipoUva.query.filter_by(ds_tipo_uva=tipo_uva).subquery()
             query = query.filter_by(id_tipo_uva=subquery.c.id_tipo_uva)
-        #    subquery = TipoUva.query.filter(func.lower(TipoUva.ds_tipo_uva) == func.lower(tipo_uva)).subquery()
-        #    query = query.filter(TipoUva.id_tipo_uva == subquery.c.id_tipo_uva)
-
+        if tipo_produto:
+            query = query.filter_by(ds_produto=tipo_produto)
         if tipo_cultivo:
             query = query.filter(func.lower(Processamento.ds_cultivo) == func.lower(tipo_cultivo))
 
         # roda a consulta se tiver pelo menos um filtro ou retorna um erro
-        if not ano and not tipo_uva and not tipo_cultivo:
-            return jsonify({"message": "Você deve fornecer um ano, tipo de uva ou tipo de cultivo"}), 400
+        if not ano and not tipo_uva and not tipo_cultivo and not tipo_produto:
+            return jsonify({"message": "Você deve fornecer um ano, tipo de uva, tipo de produto ou tipo de cultivo"}), 400
         else:
             processamento = query.all()
 

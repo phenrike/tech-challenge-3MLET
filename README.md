@@ -95,7 +95,17 @@ ________________________________________________________________________________
 
 ## Documentação da API
 
-Esta API não consulta dados diretamente no site do Embrapa, ela possui um job que é executado diariamente e faz o download dos arquivos .csv disponibilizados pela empresa e os importa para um banco de dados local. Por tanto, caso tenha alguma atualização no site, ela estará disponibilizada no dia seguinte após a sincronização.
+Esta API não consulta dados diretamente no site do Embrapa, ela faz o download dos arquivos .csv disponibilizados pela empresa e os importa para um banco de dados.
+
+### **Desenho da arquitetura: Fluxo do código**
+
+!["Fluxo do código"](docs/Fluxo_do_codigo.png)
+
+### **Desenho da arquitetura: Fluxo do deploy**
+
+!["Fluxo do deploy"](docs/Fluxo_de_deploy.png)
+
+## **Detalhamento dos endpoints**
 
 ### **Endpoint: Registro de usuário**
 
@@ -111,8 +121,8 @@ Somente usuários cadastrados no banco de dados podem acessar a API.
 
 **Resposta:**
 
-- Código `201` - 	User successfully registered and saved in the database
-
+- Código `201` - 	Usuário registrado com sucesso no banco de dados
+_________________________________________________________________________________________
 ### **Endpoint: Autenticação**
 
 A autenticação na API é feita através de JWT (Jason Web Token).
@@ -127,12 +137,12 @@ A autenticação na API é feita através de JWT (Jason Web Token).
 
 **Resposta:**
 
-- Código `200` - login successful and jwt generated
-- Código `401`- Invalid username or password
-
+- Código `200` - Login efetuado com sucesso e JWT gerado
+- Código `401` - Usuário ou senha inválidos
+_________________________________________________________________________________________
 ### **Endpoint: Comercialização**
 
-Este endpoint permite a pesquisa de dados comerciais baseados em ano ou produto.
+Este endpoint permite a pesquisa de dados comerciais baseados em ano, produto ou tipo de produto.
 
 **Requisição:**
 
@@ -141,16 +151,17 @@ Este endpoint permite a pesquisa de dados comerciais baseados em ano ou produto.
 - Parâmetros:
   - `ano`: Ano de comercialização.
   - `produto`: Produto comercializado.
+  - `tipo_produto`: Tipo de produto comercializado
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `400` - You must provide a year or a product
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `400` - Você deve fornecer um ano, produto ou tipo de produto
+- Código `401` - Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Produção**
 
-Este endpoint permite a pesquisa de dados de produção baseados em ano ou produto.
+Este endpoint permite a pesquisa de dados de produção baseados em ano, produto ou tipo de produto.
 
 **Requisição:**
 
@@ -159,13 +170,14 @@ Este endpoint permite a pesquisa de dados de produção baseados em ano ou produ
 - Parâmetros:
   - `ano`: Ano de produção.
   - `produto`: Produto produzido.
+  - `tipo_produto`: Tipo de produto produzido
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `400` - You must provide a year or a product
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `400` - Você deve fornecer um ano, produto ou tipo de produto
+- Código `401` - Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Processamento**
 
 Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo da uva ou tipo de cultivo.
@@ -177,14 +189,15 @@ Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo
 - Parâmetros:
   - `ano`: Ano de processamento.
   - `tipo_uva`: Tipo de uva processada.
+  - `tipo_produto`: Tipo de produto processado.
   - `tipo_cultivo`: Tipo de cultivo processado.
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `400` - You must provide a year or a product
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `400` - Você deve fornecer um ano, tipo de uva ou tipo de cultivo
+- Código `401` - Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Tipos Processamento**
 
 Este endpoint permite a pesquisa dos tipos de uvas processadas no endpoint de processamento.
@@ -196,9 +209,9 @@ Este endpoint permite a pesquisa dos tipos de uvas processadas no endpoint de pr
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `401`- Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Importação**
 
 Este endpoint permite a pesquisa de dados importados baseados em ano, país e tipo de produto.
@@ -214,10 +227,10 @@ Este endpoint permite a pesquisa de dados importados baseados em ano, país e ti
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `400` - You must provide a year or a product
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `400` - Você deve fornecer um ano, país ou tipo de produto
+- Código `401` - Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Exportação**
 
 Este endpoint permite a pesquisa de dados exportados baseados em ano, país e tipo de produto.
@@ -233,10 +246,10 @@ Este endpoint permite a pesquisa de dados exportados baseados em ano, país e ti
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `400` - You must provide a year or a product
-- Código `401`- Unauthorized
-
+- Código `200` - Dados retornados com sucesso
+- Código `400` - Você deve fornecer um ano, país ou tipo de produto
+- Código `401` - Não autorizado
+_________________________________________________________________________________________
 ### **Endpoint: Tipos Importação e Exportação**
 
 Este endpoint permite a pesquisa dos tipos de uvas importadas/exportadas no endpoint de importação/exportação.
@@ -248,14 +261,12 @@ Este endpoint permite a pesquisa dos tipos de uvas importadas/exportadas no endp
 
 **Resposta:**
 
-- Código `200` - Data returned successfully
-- Código `401`- Unauthorized
+- Código `200` - Dados retornados com sucesso
+- Código `401` - Não autorizado
 
 _______________________________________________________________
-## Integrantes
+### Cenário de utilização da API
 
-1. Paulo Henrique Piaunios dos Santos  
-2. Letícia Miranda  
-3. Diogo Octaviano Jesse  
-4. João Paulo Gonçalves Ribeiro  
-5. Thadeu Pereira de Alencar Soares  
+A proposta deste projeto é desenvolver uma API pública que consulta dados de vitivinicultura disponíveis no site da Embrapa, abrangendo as abas de Produção, Processamento, Comercialização, Importação e Exportação.
+A API fará a coleta de dados do site da Embrapa e armazenará em uma banco de dados que será preparado para o treinamento de modelos de Machine Learning. Os modelos serão treinados para prever a demanda por diferentes tipos de vinhos em várias regiões geográficas, analisando padrões históricos e identificando tendências de consumo.
+Vinícolas e distribuídos podem utilizar esses modelos a fim de otimizar a gestão de estoque e planejamento de produção, reduzindo custos e melhorando a eficiência na cadeia de suprimentos respondendo de forma mais rápida às mudanças no mercado.

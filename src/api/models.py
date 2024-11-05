@@ -19,6 +19,7 @@ class Processamento(db.Model):
     id_processamento = db.Column(db.Integer, primary_key=True)
     id_tipo_uva = db.Column(db.Integer, ForeignKey('tbl_tipo_uva.id_tipo_uva'), nullable=True)
     ds_cultivo = db.Column(db.String(100), nullable=False)
+    ds_produto = db.Column(db.String(100), nullable=False)
     dt_ano = db.Column(db.Integer, nullable=False)
     qt_processamento = db.Column(db.Float, nullable=True)
 
