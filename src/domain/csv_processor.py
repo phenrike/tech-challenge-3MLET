@@ -44,6 +44,7 @@ class CSVProcessor:
         elif file_type.value in proc_files:
             tp_key = "id_tipo_uva"
             ds_key = "ds_cultivo"
+            ds_prod_key = "ds_produto"
             dt_key = "dt_ano"
             qt_key = "qt_processamento"
             delimiter = "\t"
