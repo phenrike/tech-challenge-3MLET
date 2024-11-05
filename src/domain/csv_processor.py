@@ -50,6 +50,7 @@ class CSVProcessor:
         elif file_type.value == "ProcessaViniferas.csv":
             tp_key = "id_tipo_uva"
             ds_key = "ds_cultivo"
+            ds_prod_key = "ds_produto"
             dt_key = "dt_ano"
             qt_key = "qt_processamento"
             delimiter = ";"
@@ -61,6 +62,9 @@ class CSVProcessor:
             df = pd.read_csv(csv_file, encoding='utf-8', sep=delimiter)
         except UnicodeDecodeError:
             df = pd.read_csv(csv_file, encoding='latin1', sep=delimiter)
+
+        # tratamento de dados faltantes para substituição durante o processamento
+        df.fillna(value='*', inplace=True)
 
 # Remover espaços no início e fim dos valores em todas as colunas
         df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
@@ -118,9 +122,11 @@ class CSVProcessor:
                             qt = float(row.iloc[i])
                         except ValueError:
                             qt = None
+
                         data.append({
                             tp_key: tipo_uva_id.id_tipo_uva,
                             ds_key: tipo_cultivo,
+                            ds_prod_key: row.iloc[2],
                             dt_key: int(df.columns[i]),
                             qt_key: qt
                         })

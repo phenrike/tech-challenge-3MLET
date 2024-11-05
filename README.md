@@ -99,7 +99,7 @@ Esta API não consulta dados diretamente no site do Embrapa, ela faz o download 
 
 ### **Desenho da arquitetura: Fluxo do código**
 
-!["Fluxo do código"](docs/Fluxo_do_codigo.jpg)
+!["Fluxo do código"](docs/Fluxo_do_codigo.png)
 
 ### **Desenho da arquitetura: Fluxo do deploy**
 
@@ -189,6 +189,7 @@ Este endpoint permite a pesquisa de dados do processamento baseados em ano, tipo
 - Parâmetros:
   - `ano`: Ano de processamento.
   - `tipo_uva`: Tipo de uva processada.
+  - `tipo_produto`: Tipo de produto processado.
   - `tipo_cultivo`: Tipo de cultivo processado.
 
 **Resposta:**

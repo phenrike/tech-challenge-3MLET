@@ -204,6 +204,7 @@ CREATE TABLE public.tbl_processamento (
 	id_processamento serial4 NOT NULL,
 	id_tipo_uva int4 NOT NULL,
     ds_cultivo varchar(100) NOT NULL,
+    ds_produto varchar(100) NOT NULL,
 	dt_ano integer NOT NULL,
 	qt_processamento numeric(15, 2) NULL,
 	CONSTRAINT tbl_processamento_pkey PRIMARY KEY (id_processamento),
